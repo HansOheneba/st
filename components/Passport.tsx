@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plane, Heart } from "lucide-react";
+import { Plane, Heart, PlaneIcon } from "lucide-react";
+import Image from "next/image";
 
 type PassportGateProps = {
   coupleNames?: string;
@@ -10,8 +11,35 @@ type PassportGateProps = {
   onOpened: () => void;
 };
 
+function useCountdown(targetISO: string) {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const target = new Date(targetISO).getTime();
+  const diff = Math.max(0, target - now);
+
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const pad = (n: number) => n.toString().padStart(2, "0");
+
+  return {
+    diff,
+    days,
+    hours: pad(hours),
+    minutes: pad(minutes),
+    seconds: pad(seconds),
+  };
+}
+
 export default function PassportGate({
-  coupleNames = "FG OFFR RO SEFAH & FG OFFR TB LAMPTEY",
   subtitle = "Tap to open invite",
   onOpened,
 }: PassportGateProps) {
@@ -30,7 +58,7 @@ export default function PassportGate({
 
     return () => clearTimeout(t);
   }, [isOpening, onOpened]);
-
+  const countdown = useCountdown("2026-02-14T09:00:00Z");
   return (
     <AnimatePresence>
       {!isGone && (
@@ -42,190 +70,213 @@ export default function PassportGate({
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="fixed inset-0 z-50 grid place-items-center bg-[#F3FAE1]"
         >
-          {/* Background planes */}
-          <div className="absolute inset-0 overflow-hidden">
-            {/* plane trail image */}
-            <div
+          {/* ================= AVIATION / MILITARY BACKGROUND ================= */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* soft base wash */}
+            <div className="absolute inset-0 bg-[#F3FAE1]" />
+
+            {/* stamp 1 */}
+            {/* <Image
+              src="/stamp.png"
+              alt=""
               aria-hidden
-              className="absolute inset-0 opacity-[0.08] pointer-events-none"
+              className="absolute top-12 right-20 opacity-20"
+              width={200}
+              height={200}
+            /> */}
+
+            {/* stamp 2 */}
+            <Image
+              src="/stamp3.png"
+              alt=""
+              aria-hidden
+              className="absolute bottom-20 right-16 opacity-20 -rotate-45 "
+              width={200}
+              height={200}
+            />
+
+            {/* stamp 2 */}
+            <Image
+              src="/plane-trail.png"
+              alt=""
+              aria-hidden
+              className="absolute top-20 right-16 opacity-20 "
+              width={200}
+              height={200}
+            />
+
+            {/* plane trail (subtle, directional) */}
+            <div
+              className="absolute inset-0 opacity-[0.07]"
               style={{
-                backgroundImage: "url('/plane-trail.png')",
+                backgroundImage: "url('/plane-trail1.png')",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "left center",
-                backgroundSize: "70%",
+                backgroundSize: "80%",
               }}
             />
 
-            {/* soft vignette */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.06),transparent_55%)]" />
+            {/* vignette for focus */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(0,0,0,0.05),transparent_60%)]" />
 
-            {/* plane 1 */}
+            {/* ================= HUD GRID (lighter on mobile) ================= */}
+            <div className="absolute inset-0 opacity-[0.3] bg-[linear-gradient(to_right,rgba(0,0,0,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.18)_1px,transparent_1px)] bg-[size:50px_50px]" />
+
+            {/* ================= ROUTE LINE ================= */}
+            <svg
+              className="absolute inset-0 opacity-[0.12]"
+              viewBox="0 0 1200 700"
+              fill="none"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M-40 520 C 180 420, 360 560, 520 440 S 840 260, 1020 360 S 1200 520, 1320 300"
+                stroke="rgba(212,175,55,0.8)"
+                strokeWidth="2"
+                strokeDasharray="8 14"
+              />
+            </svg>
+
+            {/* ================= TOP STATUS BAR (mobile-safe) ================= */}
+            <div className="absolute top-5 left-0 right-0 px-5 flex justify-between text-[10px] tracking-[0.35em] uppercase text-black/45">
+              <span>MISSION • CLEARED</span>
+              <span>ACC → ENG</span>
+            </div>
+
+            {/* ================= FLOATING PLANES (LESS ON MOBILE) ================= */}
             <motion.div
-              aria-hidden
-              className="absolute -left-24 top-24 opacity-[0.10]"
+              className="absolute -left-20 top-32 opacity-[0.08]"
               initial={{ x: -120, y: 40, rotate: -12 }}
               animate={{ x: 900, y: 520, rotate: -12 }}
-              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-            >
-              <Plane className="w-12 h-12 text-white" />
-            </motion.div>
-
-            {/* plane 2 */}
-            <motion.div
-              aria-hidden
-              className="absolute left-10 bottom-10 opacity-[0.07]"
-              initial={{ x: -200, y: 180, rotate: -8 }}
-              animate={{ x: 820, y: -220, rotate: -8 }}
-              transition={{
-                duration: 22,
-                repeat: Infinity,
-                ease: "linear",
-                delay: 2,
-              }}
-            >
-              <Plane className="w-16 h-16 text-white" />
-            </motion.div>
-
-            {/* plane 3 */}
-            <motion.div
-              aria-hidden
-              className="absolute right-0 top-1/3 opacity-[0.06]"
-              initial={{ x: 260, y: 80, rotate: 14 }}
-              animate={{ x: -980, y: 520, rotate: 14 }}
-              transition={{
-                duration: 26,
-                repeat: Infinity,
-                ease: "linear",
-                delay: 4,
-              }}
+              transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
             >
               <Plane className="w-10 h-10 text-white" />
             </motion.div>
+
+            <motion.div
+              className="hidden sm:block absolute right-0 top-1/3 opacity-[0.06]"
+              initial={{ x: 260, y: 80, rotate: 14 }}
+              animate={{ x: -980, y: 520, rotate: 14 }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            >
+              <Plane className="w-10 h-10 text-white" />
+            </motion.div>
+
+            {/* ================= BOTTOM TELEMETRY ================= */}
+            <div className="absolute bottom-6 left-0 right-0 px-5 flex justify-between text-[10px] tracking-[0.35em] uppercase text-black/45">
+              <span>ALT 31K • HDG 072</span>
+              <span>STATUS • READY</span>
+            </div>
           </div>
 
           {/* 3D Stage */}
           <div className="perspective-1200">
-            {/* Book wrapper */}
             <motion.div
               initial={{ scale: 0.98, y: 10 }}
               animate={{ scale: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="relative w-85 sm:w-95 h-130 preserve-3d"
             >
-              {/* Back cover (static) */}
-              <div className="absolute inset-0 rounded-2xl shadow-2xl bg-[#0B2A33] border border-white/10" />
+              {/* Back cover */}
+              <div className="absolute inset-0 shadow-2xl bg-[#0B2A33] border border-white/10 rounded-r-xl overflow-hidden " />
 
-              {/* Pages block (gives depth) */}
-              <div className="absolute inset-2.5 rounded-xl bg-[#f8f6ef] shadow-inner border border-black/10" />
-              <div className="absolute inset-2.5 rounded-xl bg-[#fbfaf6] border border-black/5" />
+              {/* Pages (minimal printed teaser) */}
+              <div className="absolute inset-2 bg-[#f8f6ef] border border-black/10 overflow-hidden">
+                {/* tiny paper grain */}
+                <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_30%_20%,black,transparent_45%),radial-gradient(circle_at_70%_80%,black,transparent_55%)]" />
 
-              {/* Front cover (hinged) */}
+                {/* minimalist “printed” line (fast glance) */}
+                <div className="relative h-full grid place-items-center">
+                  <div className="text-center">
+                    <PlaneIcon className="mx-auto mb-4 w-8 h-8 text-black/20" />
+                    <p className="text-[10px] tracking-[0.45em] uppercase text-black/45">
+                      Prepare for <br /> Liftoff
+                    </p>
+                  </div>
+                </div>
+
+                {/* faint corner marks */}
+                <div className="absolute left-4 top-4 h-6 w-6 border-l border-t border-black/10" />
+                <div className="absolute right-4 top-4 h-6 w-6 border-r border-t border-black/10" />
+                <div className="absolute left-4 bottom-4 h-6 w-6 border-l border-b border-black/10" />
+                <div className="absolute right-4 bottom-4 h-6 w-6 border-r border-b border-black/10" />
+              </div>
+
+              {/* Front cover */}
               <motion.div
-                className="absolute inset-0 rounded-2xl shadow-2xl cursor-pointer preserve-3d"
-                style={{
-                  transformOrigin: "left center",
-                }}
-                onClick={() => {
-                  if (!isOpening) setIsOpening(true);
-                }}
-                initial={false}
+                className="absolute inset-0 shadow-2xl cursor-pointer preserve-3d bg-[#0B1D26] rounded-r-xl overflow-hidden"
+                style={{ transformOrigin: "left center" }}
+                onClick={() => !isOpening && setIsOpening(true)}
                 animate={
-                  isOpening
-                    ? {
-                        rotateY: -165,
-                        x: -4,
-                      }
-                    : { rotateY: 0, x: 0 }
+                  isOpening ? { rotateY: -165, x: -4 } : { rotateY: 0, x: 0 }
                 }
                 transition={{ duration: 1.15, ease: [0.2, 0.8, 0.2, 1] }}
               >
-                {/* FRONT FACE (what user sees before opening) */}
-                <div className="absolute inset-0 rounded-2xl bg-[#0B1D26] border border-white/10 backface-hidden">
-                  {/* subtle texture */}
-                  <div className="absolute inset-0 rounded-2xl opacity-[0.08] bg-[radial-gradient(circle_at_30%_20%,white,transparent_45%),radial-gradient(circle_at_70%_80%,white,transparent_55%)]" />
+                {/* FRONT FACE */}
+                <div className="absolute  inset-0 bg-[#0B1D26] border border-white/10 backface-hidden ">
+                  {/* gold foil grain */}
+                  <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(120deg,transparent_0%,rgba(255,255,255,0.35)_45%,transparent_70%)]" />
 
-                  <div className="relative h-full px-8 py-10 flex flex-col items-center justify-between text-center">
-                    {/* Embossed border */}
-                    <div className="absolute inset-4 rounded-xl border border-[#D4AF37]/30" />
-                    <div className="absolute inset-4.5 rounded-xl border border-white/10" />
+                  {/* embossed inner frame */}
+                  <div className="absolute inset-5 border border-[#D4AF37]/35" />
+                  <div className="absolute inset-[22px] border border-white/10" />
 
-                    {/* Leather-ish texture */}
-                    <div className="absolute inset-0 rounded-2xl opacity-[0.10] bg-[radial-gradient(circle_at_30%_20%,white,transparent_45%),radial-gradient(circle_at_70%_80%,white,transparent_55%)]" />
-                    <div className="absolute inset-0 rounded-2xl opacity-[0.08] bg-[linear-gradient(135deg,transparent_0%,rgba(255,255,255,0.12)_40%,transparent_70%)]" />
+                  <div className="relative h-full px-10 py-14 flex flex-col items-center text-center  ">
+                    {/* PASSPORT TITLE */}
+                    <p className="text-[#D4AF37] tracking-[0.45em] text-[15px] uppercase font-semibold">
+                      Passport
+                    </p>
 
-                    {/* Top */}
-                    <div className="w-full">
-                      <p className="text-[#D4AF37] tracking-[0.35em] text-[11px] uppercase">
-                        Passport
-                      </p>
-                      {/* <p className="mt-2 text-white/70 text-[11px] tracking-[0.22em] uppercase">
-                        to engagement
+                    {/* emblem */}
+                    <div className="mt-6 relative">
+                      <div className="h-28 w-28 ]" />
+                      <div className="absolute inset-0 grid place-items-center">
+                        {/* <Heart
+                          className="h-24 w-24 text-[#D4AF37]"
+                          strokeWidth={1.4}
+                          // fill="rgba(212,175,55,0.15)"
+                        /> */}
+
+                        <Image
+                          src="/heart.png"
+                          alt="Heart"
+                          width={400}
+                          height={400}
+                        />
+                      </div>
+                    </div>
+
+                    {/* microprint lines (passport detail) */}
+                    <div className="mt-10 w-full space-y-2 opacity-70">
+                      <div className="h-px w-full bg-white/10" />
+                      <div className="h-px w-5/6 bg-white/10 mx-auto" />
+                    </div>
+
+                    <div className="mt-8">
+                      {/* <p className="text-[#D4AF37] text-[11px] tracking-[0.35em] uppercase">
+                        Invitation
                       </p> */}
+
+                      <h1 className="mt-3 text-white text-lg sm:text-xl font-semibold leading-snug text-center">
+                        <span className="block">FG OFFR RO SEFAH</span>
+                        <span className="block my-1">&amp;</span>
+                        <span className="block">FG OFFR TB LAMPTEY</span>
+                      </h1>
                     </div>
 
-                    {/* Crest / Seal */}
-                    <div className="flex flex-col items-center gap-5">
-                      {/* Gold foil seal placeholder */}
-                      {/* Gold foil heart crest */}
-                      <div className="relative">
-                        {/* outer emboss */}
-                        <div className="h-20 w-20 rounded-full border border-[#D4AF37]/50 bg-[#D4AF37]/10 shadow-[0_0_0_1px_rgba(212,175,55,0.25)_inset]" />
-
-                        {/* glow */}
-                        <div className="absolute inset-0 rounded-full opacity-[0.35] blur-sm bg-[#D4AF37]" />
-
-                        {/* heart icon */}
-                        <div className="absolute inset-0 grid place-items-center">
-                          <Heart
-                            className="h-8 w-8 text-[#D4AF37]"
-                            strokeWidth={1.5}
-                            fill="rgba(212,175,55,0.15)"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <p className="text-[#D4AF37] text-[11px] tracking-[0.32em] uppercase">
-                          Invitation
-                        </p>
-
-                        <h1 className="text-white text-lg sm:text-xl font-semibold leading-snug">
-                          {coupleNames}
-                        </h1>
-                      </div>
-
-                      {/* Microtext lines */}
-                      <div className="w-full max-w-60 space-y-2 opacity-80">
-                        <div className="h-px w-full bg-white/10" />
-                        <div className="h-px w-5/6 bg-white/10 mx-auto" />
-                        <div className="h-px w-4/6 bg-white/10 mx-auto" />
-                      </div>
-                    </div>
-
-                    {/* Bottom: chip + tap */}
-                    <div className="w-full space-y-4">
-                      <div className="flex items-center justify-center gap-3 opacity-90">
-                        {/* chip */}
-                        <div className="h-8 w-12 rounded-md border border-[#D4AF37]/40 bg-[#D4AF37]/10 shadow-[0_0_0_1px_rgba(212,175,55,0.20)_inset]" />
-                        <div className="h-px w-16 bg-white/10" />
-                        <div className="h-px w-10 bg-white/10" />
-                      </div>
-
+                    {/* bottom spacing like real passport */}
+                    <div className="mt-auto pb-6">
                       <motion.p
                         animate={
                           isOpening
                             ? { opacity: 0 }
                             : { opacity: [0.55, 1, 0.55] }
                         }
-                        transition={
-                          isOpening
-                            ? { duration: 0.2 }
-                            : {
-                                duration: 1.4,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                              }
-                        }
+                        transition={{
+                          duration: 1.4,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
                         className="text-[#D4AF37] text-sm"
                       >
                         {subtitle}
@@ -234,88 +285,11 @@ export default function PassportGate({
                   </div>
                 </div>
 
-                {/* INSIDE FACE (shows when cover swings open) */}
-                <div
-                  className="absolute inset-0 rounded-2xl bg-[#fbfaf6] border border-black/10 backface-hidden overflow-hidden"
-                  style={{ transform: "rotateY(180deg)" }}
-                >
-                  {/* subtle world-map-ish texture vibe */}
-                  <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_30%_20%,black,transparent_45%),radial-gradient(circle_at_70%_70%,black,transparent_55%)]" />
-
-                  <div className="relative h-full p-8 flex flex-col justify-between">
-                    <div>
-                      <p className="text-[#AA9D7D] tracking-[0.35em] text-[10px] uppercase">
-                        Processing…
-                      </p>
-
-                      <motion.h2
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={
-                          isOpening
-                            ? { opacity: 1, y: 0 }
-                            : { opacity: 0, y: 8 }
-                        }
-                        transition={{ duration: 0.45, ease: "easeOut" }}
-                        className="mt-3 text-[#1b1b1b] text-xl font-semibold"
-                      >
-                        Taking you to your experience
-                      </motion.h2>
-
-                      <motion.p
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={
-                          isOpening
-                            ? { opacity: 1, y: 0 }
-                            : { opacity: 0, y: 8 }
-                        }
-                        transition={{
-                          duration: 0.55,
-                          delay: 0.1,
-                          ease: "easeOut",
-                        }}
-                        className="mt-2 text-black/60 text-sm"
-                      >
-                        Please hold on while we open your invite ✈️
-                      </motion.p>
-                    </div>
-
-                    {/* animated progress bar */}
-                    <div className="space-y-4">
-                      <div className="h-2 w-full rounded-full bg-black/10 overflow-hidden">
-                        <motion.div
-                          initial={{ width: "0%" }}
-                          animate={
-                            isOpening ? { width: "100%" } : { width: "0%" }
-                          }
-                          transition={{ duration: 1.05, ease: "easeInOut" }}
-                          className="h-full rounded-full bg-[#D4AF37]"
-                        />
-                      </div>
-
-                      {/* little “stamping” badge */}
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.92, rotate: -8 }}
-                        animate={
-                          isOpening
-                            ? { opacity: 1, scale: 1, rotate: 0 }
-                            : { opacity: 0 }
-                        }
-                        transition={{
-                          duration: 0.5,
-                          delay: 0.15,
-                          ease: "easeOut",
-                        }}
-                        className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-xs text-black/70"
-                      >
-                        <span className="h-2 w-2 rounded-full bg-[#D4AF37]" />
-                        Stamping your passport…
-                      </motion.div>
-                    </div>
-                  </div>
-                </div>
+                {/* INSIDE FACE (leave yours as-is) */}
+                {/* keep your existing inside face here */}
               </motion.div>
 
-              {/* Optional little drop shadow under the book */}
+              {/* shadow */}
               <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[85%] h-8 blur-2xl bg-black/50 -z-10" />
             </motion.div>
           </div>
@@ -324,4 +298,3 @@ export default function PassportGate({
     </AnimatePresence>
   );
 }
-

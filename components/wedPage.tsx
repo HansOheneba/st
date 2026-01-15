@@ -38,6 +38,8 @@ const IMG = {
   registry:
     "https://images.unsplash.com/photo-1571406172996-99dcf29b2f7a?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   map: "https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  us: "https://images.unsplash.com/photo-1762347159296-e8bbcfd7d108?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  rsvp: "https://images.unsplash.com/photo-1762846700374-f4aeb2f38e92?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 };
 
 export default function Invite() {
@@ -74,26 +76,27 @@ export default function Invite() {
           </svg>
         </div>
 
-        <div className="relative z-10 mx-auto max-w-6xl px-5 pt-28 pb-20 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[11px] tracking-[0.35em] uppercase text-white/80">
+        <div className="relative z-10 mx-auto max-w-6xl px-5 pt-20 sm:pt-28 pb-16 sm:pb-20 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[10px] sm:text-[11px] tracking-[0.35em] uppercase text-white/80">
             <Plane className="h-4 w-4 text-[#D4AF37]" />
             Passport to Engagement
           </div>
 
-          <h1 className="mt-8 text-5xl sm:text-6xl md:text-7xl leading-none">
+          <h1 className="mt-7 sm:mt-8 text-4xl sm:text-6xl md:text-7xl leading-[0.95] sm:leading-none">
             FG OFFR RO SEFAH
-            <span className="block mt-4 text-white/90">&</span>
+            <span className="block mt-3 sm:mt-4 text-white/90">&</span>
             FG OFFR TB LAMPTEY
           </h1>
 
-          <p className="mt-7 text-white/70 text-sm tracking-[0.25em] uppercase">
+          <p className="mt-5 sm:mt-7 text-white/70 text-[11px] sm:text-sm tracking-[0.22em] sm:tracking-[0.25em] uppercase">
             Accra • 14 Feb 2026 • Boarding begins 08:30
           </p>
 
           {/* “Boarding pass” strip */}
-          <div className="mt-10 mx-auto max-w-3xl rounded-2xl border border-white/12 bg-black/35 backdrop-blur-sm overflow-hidden">
+          <div className="mt-8 sm:mt-10 mx-auto max-w-3xl rounded-2xl border border-white/12 bg-black/35 backdrop-blur-sm overflow-hidden">
+            {/* Top row: becomes stacked + centered on mobile */}
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-0">
-              <div className="p-6 text-left">
+              <div className="p-5 sm:p-6 text-center sm:text-left">
                 <p className="text-xs tracking-[0.30em] uppercase text-white/60">
                   Departure
                 </p>
@@ -105,7 +108,7 @@ export default function Invite() {
                 <div className="h-14 w-px bg-white/10" />
               </div>
 
-              <div className="p-6 text-right">
+              <div className="p-5 sm:p-6 text-center sm:text-right">
                 <p className="text-xs tracking-[0.30em] uppercase text-white/60">
                   Arrival
                 </p>
@@ -116,7 +119,8 @@ export default function Invite() {
 
             <div className="h-px w-full bg-white/10" />
 
-            <div className="p-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+            {/* Bottom minis: 2-cols on mobile, 3-cols on sm+ */}
+            <div className="p-5 sm:p-6 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 text-left">
               <Mini label="Flight" value="PT-0214" />
               <Mini label="Gate" value="Love" />
               <Mini label="Seat" value="A2 & B2" />
@@ -126,8 +130,8 @@ export default function Invite() {
       </section>
 
       {/* MOSAIC GRID */}
-      <section className="mx-auto max-w-6xl px-5 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 overflow-hidden rounded-2xl border border-white/10">
+      <section className="mx-auto max-w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 overflow-hidden pb-14 border-white/10">
           {/* Row 1 */}
           <MosaicImage src={IMG.story} alt="Story" />
           <Panel>
@@ -185,10 +189,39 @@ export default function Invite() {
               Kindly note: this event is strictly by invitation.
             </div>
           </Panel>
+
           <MosaicImage src={IMG.details} alt="Details" />
 
+          <MosaicImage src={IMG.us} alt="Story" />
+          <Panel>
+            <PanelTitle>OUR STORY</PanelTitle>
+            <PanelText>
+              We met in a very beautiful city—the only twin city in Ghana—where
+              the sea breeze carries dreams and destiny quietly finds its way.
+              It was there, in Sekondi–Takoradi, that our love was brewed,
+              gently and intentionally.
+              <br />
+              <br />
+              From the very first day, I looked her in the eyes and told her,
+              without hesitation, that I was going to marry her. No doubts. No
+              games. Just certainty. She smiled then, not knowing how powerfully
+              those words would echo into our future.
+              <br />
+              <br />
+              The journey hasn’t been without its ups and downs. We’ve been
+              tested, stretched, and refined by life, but through it all, love
+              remained our anchor. Each challenge only confirmed what our hearts
+              already knew—that this was no accident, but purpose.
+              <br />
+              <br />
+              Today, here we are. What began in a twin city has become one
+              heart, one love, and one future. Truly, a perfect match made in
+              heaven. 💍✨
+            </PanelText>
+          </Panel>
+
           {/* Row 3 */}
-          <MosaicImage src={IMG.venue} alt="Venue" />
+
           <Panel>
             <PanelTitle>ARRIVAL & ROUTE</PanelTitle>
             <PanelText>
@@ -212,6 +245,7 @@ export default function Invite() {
               </a>
             </div>
           </Panel>
+          <MosaicImage src={IMG.venue} alt="Venue" />
         </div>
       </section>
 
@@ -244,17 +278,31 @@ export default function Invite() {
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
                 {/* Replace with your real map link later */}
                 <a
-                  href="#"
+                  href="https://maps.app.goo.gl/g7BMsyKMNjH71xJ27"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm hover:bg-white/15 transition text-center"
                 >
                   Open in Maps
                 </a>
-                <a
-                  href="#"
+                <button
+                  onClick={() => {
+                    const mapUrl = "https://maps.app.goo.gl/g7BMsyKMNjH71xJ27";
+                    if (navigator.share) {
+                      navigator.share({
+                        title: "The B B Event Center",
+                        text: "Join us at The B B Event Center, Westlands Haatso",
+                        url: mapUrl,
+                      });
+                    } else {
+                      navigator.clipboard.writeText(mapUrl);
+                      alert("Location link copied to clipboard!");
+                    }
+                  }}
                   className="rounded-full border border-white/20 bg-transparent px-6 py-3 text-sm hover:bg-white/10 transition text-center"
                 >
                   Share Location
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -283,23 +331,27 @@ export default function Invite() {
             </h2>
 
             <p className="mt-6 text-white/70 text-sm leading-relaxed">
-              If you would like to honor us with a gift, we’ve provided options
-              below. Thank you for celebrating with us.
+              Your presence means everything to us. If you wish to bless us
+              further, the options below are available. Thank you for
+              celebrating this journey with us.
             </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="#"
-                className="rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm hover:bg-white/15 transition"
-              >
-                View Registry
-              </a>
-              <a
-                href="#"
-                className="rounded-full border border-white/20 bg-transparent px-6 py-3 text-sm hover:bg-white/10 transition"
-              >
-                Gift Details
-              </a>
+            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+              {/* MOMO */}
+              <GiftCard
+                title="Mobile Money"
+                name="Richard Obeng Sefah"
+                value="0549422645"
+                meta="MTN MoMo"
+              />
+
+              {/* BANK */}
+              <GiftCard
+                title="Bank Transfer"
+                name="Tracey Babsy Lamptey"
+                value="1441004879779"
+                meta="EcoBank"
+              />
             </div>
           </div>
 
@@ -311,6 +363,12 @@ export default function Invite() {
           </div>
         </div>
       </section>
+
+      <RSVPSection
+        name="Stacey Elsie Lamptey"
+        phone="0560607547"
+        eventTag="PT-0214"
+      />
 
       <footer className="py-10 text-center text-xs text-white/50">
         Passport to Engagement • Accra
@@ -332,8 +390,10 @@ function MosaicImage({ src, alt }: { src: string; alt: string }) {
 
 function Panel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-[#141416] p-10 md:p-12">
-      <div className="max-w-md">{children}</div>
+    <div className="bg-[#141416] p-10 md:p-12 flex items-center">
+      <div className="max-w-md mx-auto w-full text-center md:text-left">
+        {children}
+      </div>
     </div>
   );
 }
@@ -368,5 +428,134 @@ function Mini({ label, value }: { label: string; value: string }) {
       </div>
       <div className="mt-2 text-sm text-white/85">{value}</div>
     </div>
+  );
+}
+
+function GiftCard({
+  title,
+  name,
+  value,
+  meta,
+}: {
+  title: string;
+  name: string;
+  value: string;
+  meta: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-white/15 bg-white/5 backdrop-blur-sm p-5 text-left">
+      <p className="text-xs tracking-[0.35em] uppercase text-white/60">
+        {title}
+      </p>
+
+      <div className="mt-3 text-lg font-semibold text-white">{value}</div>
+
+      <p className="mt-1 text-sm text-white/70">{name}</p>
+      <p className="mt-1 text-xs text-white/50">{meta}</p>
+
+      <button
+        onClick={() => navigator.clipboard.writeText(value)}
+        className="mt-4 inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs text-white/80 hover:bg-white/20 transition"
+      >
+        Copy
+      </button>
+    </div>
+  );
+}
+function RSVPSection({
+  name,
+  phone,
+  eventTag = "PT-0214",
+}: {
+  name: string;
+  phone: string; // e.g. 0560607547
+  eventTag?: string;
+}) {
+  const intl = `233${phone.replace(/\D/g, "").replace(/^0/, "")}`;
+  const pretty = phone;
+
+  const message = encodeURIComponent(
+    `Hello ${name}, I’m confirming my attendance for the engagement (${eventTag}). My name is: ______. ✅`
+  );
+
+  const waLink = `https://wa.me/${intl}?text=${message}`;
+  const telLink = `tel:${phone}`;
+
+  return (
+    <section id="rsvp" className="relative py-10 overflow-hidden">
+      <Image
+        src={IMG.rsvp}
+        alt="RSVP background"
+        fill
+        className="object-cover opacity-60"
+        unoptimized
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/70 to-black/90" />
+      <div className="absolute inset-0 opacity-[0.18] bg-[radial-gradient(circle_at_50%_30%,rgba(212,175,55,0.12),transparent_55%)]" />
+
+      <div className="relative z-10 mx-auto max-w-6xl px-5">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-xs tracking-[0.35em] uppercase text-white/70">
+            RSVP
+          </p>
+
+          <h2 className="mt-6 text-4xl sm:text-5xl leading-tight">
+            Kindly confirm attendance.
+          </h2>
+
+          <p className="mt-6 text-white/70 text-sm leading-relaxed">
+            This event is strictly by invitation. Please confirm directly with{" "}
+            {name}.
+          </p>
+
+          <div className="mt-10 mx-auto max-w-xl rounded-2xl border border-white/12 bg-white/5 backdrop-blur-sm p-6 text-left">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs tracking-[0.30em] uppercase text-white/60">
+                  RSVP Contact
+                </p>
+                <p className="mt-2 text-lg font-semibold text-white">{name}</p>
+                <p className="mt-1 text-sm text-white/70">{pretty}</p>
+              </div>
+
+              <button
+                onClick={() => navigator.clipboard.writeText(phone)}
+                className="shrink-0 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs text-white/80 hover:bg-white/20 transition"
+              >
+                Copy
+              </button>
+            </div>
+
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <a
+                href={waLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-[#F6F7EC]/40 bg-[#AD833C]/15 px-6 py-3 text-sm text-white hover:bg-[#25D366]/25 transition text-center"
+              >
+                Confirm on WhatsApp
+              </a>
+
+              <a
+                href={telLink}
+                className="rounded-full border border-white/20 bg-transparent px-6 py-3 text-sm hover:bg-white/10 transition text-center"
+              >
+                Call
+              </a>
+            </div>
+
+            <p className="mt-5 text-xs text-white/55">
+              WhatsApp message is pre-filled — just add your name.
+            </p>
+          </div>
+
+          {/* <div className="mt-16 text-center select-none pointer-events-none">
+            <div className="text-[14vw] leading-none font-semibold text-white/10">
+              CONFIRM
+            </div>
+          </div> */}
+        </div>
+      </div>
+    </section>
   );
 }
