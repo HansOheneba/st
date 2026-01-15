@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plane, Heart, PlaneIcon } from "lucide-react";
+import { Plane, PlaneIcon } from "lucide-react";
 import Image from "next/image";
 
 type PassportGateProps = {
@@ -49,16 +49,16 @@ export default function PassportGate({
   useEffect(() => {
     if (!isOpening) return;
 
-    // Let the cover open first, then fade overlay out.
     const t = setTimeout(() => {
       setIsGone(true);
-      // a tiny delay so fade starts, then reveal content
       setTimeout(onOpened, 250);
     }, 1200);
 
     return () => clearTimeout(t);
   }, [isOpening, onOpened]);
+
   const countdown = useCountdown("2026-02-14T09:00:00Z");
+
   return (
     <AnimatePresence>
       {!isGone && (
@@ -72,40 +72,26 @@ export default function PassportGate({
         >
           {/* ================= AVIATION / MILITARY BACKGROUND ================= */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {/* soft base wash */}
             <div className="absolute inset-0 bg-[#F3FAE1]" />
 
-            {/* stamp 1 */}
-            {/* <Image
-              src="/stamp.png"
-              alt=""
-              aria-hidden
-              className="absolute top-12 right-20 opacity-20"
-              width={200}
-              height={200}
-            /> */}
-
-            {/* stamp 2 */}
             <Image
               src="/stamp3.png"
               alt=""
               aria-hidden
-              className="absolute bottom-20 right-16 opacity-20 -rotate-45 "
+              className="absolute bottom-20 right-16 opacity-20 -rotate-45"
               width={200}
               height={200}
             />
 
-            {/* stamp 2 */}
             <Image
               src="/plane-trail.png"
               alt=""
               aria-hidden
-              className="absolute top-20 right-16 opacity-20 "
+              className="absolute top-20 right-16 opacity-20"
               width={200}
               height={200}
             />
 
-            {/* plane trail (subtle, directional) */}
             <div
               className="absolute inset-0 opacity-[0.07]"
               style={{
@@ -116,13 +102,10 @@ export default function PassportGate({
               }}
             />
 
-            {/* vignette for focus */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(0,0,0,0.05),transparent_60%)]" />
 
-            {/* ================= HUD GRID (lighter on mobile) ================= */}
             <div className="absolute inset-0 opacity-[0.3] bg-[linear-gradient(to_right,rgba(0,0,0,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.18)_1px,transparent_1px)] bg-[size:50px_50px]" />
 
-            {/* ================= ROUTE LINE ================= */}
             <svg
               className="absolute inset-0 opacity-[0.12]"
               viewBox="0 0 1200 700"
@@ -137,13 +120,11 @@ export default function PassportGate({
               />
             </svg>
 
-            {/* ================= TOP STATUS BAR (mobile-safe) ================= */}
             <div className="absolute top-5 left-0 right-0 px-5 flex justify-between text-[10px] tracking-[0.35em] uppercase text-black/45">
               <span>MISSION • CLEARED</span>
               <span>ACC → ENG</span>
             </div>
 
-            {/* ================= FLOATING PLANES (LESS ON MOBILE) ================= */}
             <motion.div
               className="absolute -left-20 top-32 opacity-[0.08]"
               initial={{ x: -120, y: 40, rotate: -12 }}
@@ -162,10 +143,23 @@ export default function PassportGate({
               <Plane className="w-10 h-10 text-white" />
             </motion.div>
 
-            {/* ================= BOTTOM TELEMETRY ================= */}
             <div className="absolute bottom-6 left-0 right-0 px-5 flex justify-between text-[10px] tracking-[0.35em] uppercase text-black/45">
               <span>ALT 31K • HDG 072</span>
               <span>STATUS • READY</span>
+            </div>
+
+            {/* (optional) countdown, if you want it on this screen too */}
+            <div className="absolute bottom-16 right-5 sm:right-8 rounded-xl border border-black/10 bg-white/65 backdrop-blur-sm px-4 py-3 text-right shadow-sm">
+              <p className="text-[10px] tracking-[0.35em] uppercase text-black/50">
+                T-MINUS
+              </p>
+              <div className="mt-1 font-semibold text-black text-base">
+                {countdown.days}D {countdown.hours}:{countdown.minutes}:
+                {countdown.seconds}
+              </div>
+              <p className="mt-1 text-[11px] text-black/50">
+                Boarding sequence initiated
+              </p>
             </div>
           </div>
 
@@ -176,16 +170,15 @@ export default function PassportGate({
               animate={{ scale: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="relative w-85 sm:w-95 h-130 preserve-3d"
+              style={{ transformStyle: "preserve-3d" }}
             >
               {/* Back cover */}
-              <div className="absolute inset-0 shadow-2xl bg-[#0B2A33] border border-white/10 rounded-r-xl overflow-hidden " />
+              <div className="absolute inset-0 shadow-2xl bg-[#0B2A33] border border-white/10 rounded-r-xl overflow-hidden" />
 
               {/* Pages (minimal printed teaser) */}
               <div className="absolute inset-2 bg-[#f8f6ef] border border-black/10 overflow-hidden">
-                {/* tiny paper grain */}
                 <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_30%_20%,black,transparent_45%),radial-gradient(circle_at_70%_80%,black,transparent_55%)]" />
 
-                {/* minimalist “printed” line (fast glance) */}
                 <div className="relative h-full grid place-items-center">
                   <div className="text-center">
                     <PlaneIcon className="mx-auto mb-4 w-8 h-8 text-black/20" />
@@ -195,48 +188,46 @@ export default function PassportGate({
                   </div>
                 </div>
 
-                {/* faint corner marks */}
                 <div className="absolute left-4 top-4 h-6 w-6 border-l border-t border-black/10" />
                 <div className="absolute right-4 top-4 h-6 w-6 border-r border-t border-black/10" />
                 <div className="absolute left-4 bottom-4 h-6 w-6 border-l border-b border-black/10" />
                 <div className="absolute right-4 bottom-4 h-6 w-6 border-r border-b border-black/10" />
               </div>
 
-              {/* Front cover */}
+              {/* Front cover (hinged) */}
               <motion.div
-                className="absolute inset-0 shadow-2xl cursor-pointer preserve-3d bg-[#0B1D26] rounded-r-xl overflow-hidden"
-                style={{ transformOrigin: "left center" }}
+                className="absolute inset-0 shadow-2xl cursor-pointer preserve-3d rounded-r-xl overflow-hidden"
+                style={{
+                  transformOrigin: "left center",
+                  transformStyle: "preserve-3d",
+                }}
                 onClick={() => !isOpening && setIsOpening(true)}
                 animate={
                   isOpening ? { rotateY: -165, x: -4 } : { rotateY: 0, x: 0 }
                 }
                 transition={{ duration: 1.15, ease: [0.2, 0.8, 0.2, 1] }}
               >
-                {/* FRONT FACE */}
-                <div className="absolute  inset-0 bg-[#0B1D26] border border-white/10 backface-hidden ">
-                  {/* gold foil grain */}
+                {/* ================= FRONT FACE (cover) ================= */}
+                <div
+                  className="absolute inset-0 bg-[#0B1D26] border border-white/10"
+                  style={{
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
+                  }}
+                >
                   <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(120deg,transparent_0%,rgba(255,255,255,0.35)_45%,transparent_70%)]" />
 
-                  {/* embossed inner frame */}
                   <div className="absolute inset-5 border border-[#D4AF37]/35" />
                   <div className="absolute inset-[22px] border border-white/10" />
 
-                  <div className="relative h-full px-10 py-14 flex flex-col items-center text-center  ">
-                    {/* PASSPORT TITLE */}
+                  <div className="relative h-full px-10 py-14 flex flex-col items-center text-center">
                     <p className="text-[#D4AF37] tracking-[0.45em] text-[15px] uppercase font-semibold">
                       Passport
                     </p>
 
-                    {/* emblem */}
                     <div className="mt-6 relative">
-                      <div className="h-28 w-28 ]" />
+                      <div className="h-28 w-28" />
                       <div className="absolute inset-0 grid place-items-center">
-                        {/* <Heart
-                          className="h-24 w-24 text-[#D4AF37]"
-                          strokeWidth={1.4}
-                          // fill="rgba(212,175,55,0.15)"
-                        /> */}
-
                         <Image
                           src="/heart.png"
                           alt="Heart"
@@ -246,17 +237,12 @@ export default function PassportGate({
                       </div>
                     </div>
 
-                    {/* microprint lines (passport detail) */}
                     <div className="mt-10 w-full space-y-2 opacity-70">
                       <div className="h-px w-full bg-white/10" />
                       <div className="h-px w-5/6 bg-white/10 mx-auto" />
                     </div>
 
                     <div className="mt-8">
-                      {/* <p className="text-[#D4AF37] text-[11px] tracking-[0.35em] uppercase">
-                        Invitation
-                      </p> */}
-
                       <h1 className="mt-3 text-white text-lg sm:text-xl font-semibold leading-snug text-center">
                         <span className="block">FG OFFR RO SEFAH</span>
                         <span className="block my-1">&amp;</span>
@@ -264,7 +250,6 @@ export default function PassportGate({
                       </h1>
                     </div>
 
-                    {/* bottom spacing like real passport */}
                     <div className="mt-auto pb-6">
                       <motion.p
                         animate={
@@ -285,8 +270,26 @@ export default function PassportGate({
                   </div>
                 </div>
 
-                {/* INSIDE FACE (leave yours as-is) */}
-                {/* keep your existing inside face here */}
+                {/* ================= INSIDE FACE (blank inner cover) ================= */}
+                <div
+                  className="absolute inset-0 bg-[#1e3a5f] border border-white/10"
+                  style={{
+                    transform: "rotateY(180deg)",
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
+                  }}
+                >
+                  {/* keep it mostly blank with subtle gradient like a real passport/book */}
+                  <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent_45%),radial-gradient(circle_at_70%_80%,rgba(0,0,0,0.15),transparent_55%)]" />
+
+                  {/* very subtle inner-print (optional, tiny) */}
+                  <div className="absolute bottom-8 left-8 right-8">
+                    <div className="h-px w-full bg-white/15" />
+                    <p className="mt-3 text-[10px] tracking-[0.45em] uppercase text-white/40">
+                      CLEARED FOR ENTRY • PT-0214
+                    </p>
+                  </div>
+                </div>
               </motion.div>
 
               {/* shadow */}
