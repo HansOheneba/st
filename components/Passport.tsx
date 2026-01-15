@@ -57,7 +57,7 @@ export default function PassportGate({
     return () => clearTimeout(t);
   }, [isOpening, onOpened]);
 
-  const countdown = useCountdown("2026-02-14T09:00:00Z");
+  const countdown = useCountdown("2026-02-14T10:00:00Z");
 
   return (
     <AnimatePresence>

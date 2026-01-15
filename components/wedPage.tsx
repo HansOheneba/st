@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import {
   Plane,
   MapPin,
@@ -18,7 +19,7 @@ const DETAILS: DetailItem[] = [
     value: "Saturday, 14th February, 2026",
     icon: <CalendarDays className="h-4 w-4" />,
   },
-  { label: "TIME", value: "09:00 HRS", icon: <Clock className="h-4 w-4" /> },
+  { label: "TIME", value: "10:00 HRS", icon: <Clock className="h-4 w-4" /> },
   {
     label: "VENUE",
     value: "The B B Event Center, Westlands Haatso",
@@ -26,6 +27,34 @@ const DETAILS: DetailItem[] = [
   },
   { label: "DRESS CODE", value: "White", icon: <Ticket className="h-4 w-4" /> },
 ];
+
+function useCountdown(targetISO: string) {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const target = new Date(targetISO).getTime();
+  const diff = Math.max(0, target - now);
+
+  const totalSeconds = Math.floor(diff / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const pad = (n: number) => n.toString().padStart(2, "0");
+
+  return {
+    diff,
+    days,
+    hours: pad(hours),
+    minutes: pad(minutes),
+    seconds: pad(seconds),
+  };
+}
 
 const IMG = {
   hero: "https://images.unsplash.com/photo-1570970580763-7993ca30d726?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -43,6 +72,8 @@ const IMG = {
 };
 
 export default function Invite() {
+  const countdown = useCountdown("2026-02-14T10:00:00Z");
+
   return (
     <main className="bg-[#0b0b0c] text-white">
       {/* HERO */}
@@ -79,7 +110,8 @@ export default function Invite() {
         <div className="relative z-10 mx-auto max-w-6xl px-5 pt-20 sm:pt-28 pb-16 sm:pb-20 text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[10px] sm:text-[11px] tracking-[0.35em] uppercase text-white/80">
             <Plane className="h-4 w-4 text-[#D4AF37]" />
-            Passport to Engagement
+            T-MINUS {countdown.days}D {countdown.hours}:{countdown.minutes}:
+            {countdown.seconds}
           </div>
 
           <h1 className="mt-7 sm:mt-8 text-4xl sm:text-6xl md:text-7xl leading-[0.95] sm:leading-none">
@@ -89,7 +121,7 @@ export default function Invite() {
           </h1>
 
           <p className="mt-5 sm:mt-7 text-white/70 text-[11px] sm:text-sm tracking-[0.22em] sm:tracking-[0.25em] uppercase">
-            Accra • 14 Feb 2026 • Boarding begins 08:30
+            Accra • 14 Feb 2026 • Boarding begins 09:30
           </p>
 
           {/* “Boarding pass” strip */}
