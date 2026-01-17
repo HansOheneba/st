@@ -435,7 +435,7 @@ function Panel({ children }: { children: React.ReactNode }) {
 
 function PanelTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="text-sm tracking-[0.35em] uppercase text-white/85">
+    <h3 className="text-md tracking-[0.35em] uppercase text-white/85 font-semibold">
       {children}
     </h3>
   );
