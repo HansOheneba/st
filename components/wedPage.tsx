@@ -111,10 +111,23 @@ export default function Invite() {
         </div>
 
         <div className="relative z-10 mx-auto max-w-6xl px-5 pt-20 sm:pt-28 pb-16 sm:pb-20 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[10px] sm:text-[11px] tracking-[0.35em] uppercase text-white/80">
+          <div
+            className="inline-flex items-center gap-2 rounded-full 
+  border border-[#D4AF37]/30 
+  bg-white/5 
+  px-4 py-2 
+  text-[10px] sm:text-[11px] 
+  tracking-[0.35em] uppercase 
+  text-white/85
+  shadow-[0_0_0_1px_rgba(212,175,55,0.12),0_0_24px_rgba(212,175,55,0.12)]
+"
+          >
             <Plane className="h-4 w-4 text-[#D4AF37]" />
-            T-MINUS {countdown.days}D {countdown.hours}:{countdown.minutes}:
-            {countdown.seconds}
+            <span className="text-[#D4AF37] font-semibold">T-MINUS</span>
+            <span className="font-mono tabular-nums">
+              {countdown.days}D {countdown.hours}:{countdown.minutes}:
+              {countdown.seconds}
+            </span>
           </div>
 
           <h1 className="mt-7 sm:mt-8 text-4xl sm:text-6xl md:text-7xl leading-[0.95] sm:leading-none">
@@ -192,6 +205,12 @@ export default function Invite() {
           </Panel>
 
           {/* Row 2 */}
+          <MosaicImage
+            className="md:hidden block"
+            src={IMG.details}
+            alt="Details"
+          />
+
           <Panel>
             <PanelTitle>FLIGHT DETAILS</PanelTitle>
 
@@ -225,7 +244,11 @@ export default function Invite() {
             </div>
           </Panel>
 
-          <MosaicImage src={IMG.details} alt="Details" />
+          <MosaicImage
+            className="md:block hidden"
+            src={IMG.details}
+            alt="Details"
+          />
 
           <MosaicImage src={IMG.us} alt="Story" />
           <Panel>
@@ -256,6 +279,11 @@ export default function Invite() {
           </Panel>
 
           {/* Row 3 */}
+          <MosaicImage
+            className="md:hidden block"
+            src={IMG.venue}
+            alt="Venue"
+          />
 
           <Panel>
             <PanelTitle>ARRIVAL & ROUTE</PanelTitle>
@@ -280,7 +308,11 @@ export default function Invite() {
               </a>
             </div>
           </Panel>
-          <MosaicImage src={IMG.venue} alt="Venue" />
+          <MosaicImage
+            className="md:block hidden"
+            src={IMG.venue}
+            alt="Venue"
+          />
         </div>
       </section>
 
@@ -412,16 +444,24 @@ export default function Invite() {
   );
 }
 
-function MosaicImage({ src, alt }: { src: string; alt: string }) {
+function MosaicImage({
+  src,
+  alt,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) {
   return (
-    <div className="relative min-h-[340px] md:min-h-[440px]">
+    <div className={`relative min-h-85 md:min-h-110 ${className}`}>
       <Image src={src} alt={alt} fill className="object-cover" unoptimized />
       <div className="absolute inset-0 bg-black/30" />
-      {/* subtle gold highlight */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(212,175,55,0.10),transparent_55%)]" />
     </div>
   );
 }
+
 
 function Panel({ children }: { children: React.ReactNode }) {
   return (
