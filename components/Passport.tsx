@@ -68,11 +68,25 @@ export default function PassportGate({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="fixed inset-0 z-50 grid place-items-center bg-[#F3FAE1]"
+          className="fixed inset-0 z-50 grid place-items-center overflow-hidden"
         >
+          {/* ================= BLURRED BACKGROUND IMAGE ================= */}
+          <div className="absolute inset-0 -z-20">
+            {/* dim/soften so faces/details are harder to recognize */}
+            <div className="absolute inset-0 bg-black/30" />
+          </div>
+
           {/* ================= AVIATION / MILITARY BACKGROUND ================= */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute inset-0 bg-[#F3FAE1]" />
+            <Image
+              src="/img1.jpg"
+              alt=""
+              aria-hidden
+              fill
+              priority
+              className="object-cover blur-xl scale-110"
+            />
 
             <Image
               src="/stamp3.png"
@@ -125,7 +139,7 @@ export default function PassportGate({
               <span>ACC → ENG</span>
             </div>
 
-            <motion.div
+            {/* <motion.div
               className="absolute -left-20 top-32 opacity-[0.08]"
               initial={{ x: -120, y: 40, rotate: -12 }}
               animate={{ x: 900, y: 520, rotate: -12 }}
@@ -141,7 +155,7 @@ export default function PassportGate({
               transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
             >
               <Plane className="w-10 h-10 text-white" />
-            </motion.div>
+            </motion.div> */}
 
             <div className="absolute bottom-6 left-0 right-0 px-5 flex justify-between text-[10px] tracking-[0.35em] uppercase text-black/45">
               <span>ALT 31K • HDG 072</span>
