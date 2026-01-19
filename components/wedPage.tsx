@@ -28,6 +28,7 @@ const DETAILS: DetailItem[] = [
   { label: "DRESS CODE", value: "White", icon: <Ticket className="h-4 w-4" /> },
 ];
 
+
 function useCountdown(targetISO: string) {
   const [now, setNow] = useState(() => Date.now());
 
@@ -57,11 +58,10 @@ function useCountdown(targetISO: string) {
 }
 
 const IMG = {
-  hero: "https://images.unsplash.com/photo-1570970580763-7993ca30d726?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  hero: "/img2.jpg",
   story:
     "https://images.unsplash.com/photo-1683971336619-d445cbec0276?q=80&w=1189&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  details:
-    "/img2.jpg",
+  details: "/img2.jpg",
   // details:
   //   "https://images.unsplash.com/photo-1594671515324-ea48fea744d5?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   venue:
@@ -78,7 +78,7 @@ export default function Invite() {
   const countdown = useCountdown("2026-02-14T10:00:00Z");
 
   return (
-    <main className="bg-[#0b0b0c] text-white">
+    <main className="bg-[#f4f3f2] text-[#181818]">
       {/* HERO */}
       <section className="relative min-h-[92vh] w-full overflow-hidden">
         <Image
@@ -86,13 +86,13 @@ export default function Invite() {
           alt="Hero"
           fill
           priority
-          className="object-cover opacity-95"
+          className="object-cover opacity-90"
           unoptimized
         />
 
-        {/* deep luxury overlays */}
-        <div className="absolute inset-0 bg-linear-to-b from-black/55 via-black/45 to-black/80" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(212,175,55,0.10),transparent_55%)]" />
+        <div className="absolute inset-0 bg-linear-to-b from-[#f4f3f2]/20 via-[#3378b9]/15 to-[#f4f3f2]/70" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_25%,rgba(230,209,158,0.55),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(244,243,242,0.45),transparent_35%,rgba(244,243,242,0.55))]" />
 
         {/* subtle moving “flight path” */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.16]">
@@ -112,19 +112,21 @@ export default function Invite() {
 
         <div className="relative z-10 mx-auto max-w-6xl px-5 pt-20 sm:pt-28 pb-16 sm:pb-20 text-center">
           <div
-            className="inline-flex items-center gap-2 rounded-full 
-  border border-[#D4AF37]/30 
-  bg-white/5 
-  px-4 py-2 
-  text-[10px] sm:text-[11px] 
-  tracking-[0.35em] uppercase 
-  text-white/85
-  shadow-[0_0_0_1px_rgba(212,175,55,0.12),0_0_24px_rgba(212,175,55,0.12)]
+            className="
+  inline-flex items-center gap-2 rounded-full
+  border border-[#d4ac48]/35
+  bg-[#f4f3f2]/70
+  backdrop-blur-sm
+  px-4 py-2
+  text-[10px] sm:text-[11px]
+  tracking-[0.35em] uppercase
+  text-[#494949]
+  shadow-[0_0_0_1px_rgba(212,172,72,0.10),0_12px_28px_rgba(24,24,24,0.10)]
 "
           >
-            <Plane className="h-4 w-4 text-[#D4AF37]" />
-            <span className="text-[#D4AF37] font-semibold">T-MINUS</span>
-            <span className="font-mono tabular-nums">
+            <Plane className="h-4 w-4 text-[#ba861d]" />
+            <span className="text-[#ba861d] font-semibold">T-MINUS</span>
+            <span className="font-mono tabular-nums text-[#181818]">
               {countdown.days}D {countdown.hours}:{countdown.minutes}:
               {countdown.seconds}
             </span>
@@ -141,37 +143,50 @@ export default function Invite() {
           </p>
 
           {/* “Boarding pass” strip */}
-          <div className="mt-8 sm:mt-10 mx-auto max-w-3xl rounded-2xl border border-white/12 bg-black/35 backdrop-blur-sm overflow-hidden">
+          <div className="mt-8 sm:mt-10 mx-auto max-w-3xl rounded-2xl border border-[#d4ac48]/25 bg-[#f4f3f2]/85 backdrop-blur-sm overflow-hidden shadow-[0_18px_50px_rgba(24,24,24,0.12)]">
             {/* Top row: becomes stacked + centered on mobile */}
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-0">
               <div className="p-5 sm:p-6 text-center sm:text-left">
-                <p className="text-xs tracking-[0.30em] uppercase text-white/60">
+                <p className="text-xs tracking-[0.30em] uppercase text-[#95998d]">
                   Departure
                 </p>
-                <div className="mt-2 text-2xl font-semibold">ACC</div>
-                <p className="mt-1 text-sm text-white/70">Accra</p>
+                <p className="mt-1 text-sm text-[#494949]">Accra</p>
               </div>
-
+              <div className="h-px w-60 bg-black/10 my-0.5 mx-auto" />
               <div className="hidden sm:flex items-center justify-center px-4">
-                <div className="h-14 w-px bg-white/10" />
+                <div className="h-5 w-px bg-white/10" />
               </div>
 
               <div className="p-5 sm:p-6 text-center sm:text-right">
-                <p className="text-xs tracking-[0.30em] uppercase text-white/60">
+                <p className="text-xs tracking-[0.30em] uppercase text-gray-500">
                   Arrival
                 </p>
                 <div className="mt-2 text-2xl font-semibold">ENG</div>
-                <p className="mt-1 text-sm text-white/70">Engagement</p>
+                <p className="mt-1 text-sm text-gray-500">Engagement</p>
               </div>
             </div>
 
             <div className="h-px w-full bg-white/10" />
 
-            {/* Bottom minis: 2-cols on mobile, 3-cols on sm+ */}
-            <div className="p-5 sm:p-6 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 text-left">
-              <Mini label="Flight" value="PT-0214" />
-              <Mini label="Gate" value="Love" />
-              <Mini label="Seat" value="A2 & B2" />
+            <div className="p-5 sm:p-6 flex flex-wrap gap-3 sm:gap-4 text-left">
+              <div className="flex-1 basis-[calc(50%-0.5rem)] sm:basis-[calc(33.333%-0.75rem)]">
+                <Mini label="Flight" value="PT-0214" />
+              </div>
+
+              <div className="flex-1 basis-[calc(50%-0.5rem)] sm:basis-[calc(33.333%-0.75rem)]">
+                <Mini label="Gate" value="Love" />
+              </div>
+
+              <div
+                className="
+    flex-1
+    basis-[calc(50%-0.5rem)]
+    sm:basis-[calc(33.333%-0.75rem)]
+    last:grow
+  "
+              >
+                <Mini label="Seat" value="A2 & B2" />
+              </div>
             </div>
           </div>
         </div>
@@ -191,16 +206,27 @@ export default function Invite() {
               love, laughter, and blessing.
             </PanelText>
 
-            <div className="mt-10 flex flex-wrap items-center gap-2">
-              <Badge>
-                <Plane className="h-4 w-4 text-[#D4AF37]" /> Boarding 08:30
-              </Badge>
-              <Badge>
-                <MapPin className="h-4 w-4 text-[#D4AF37]" /> Westlands Haatso
-              </Badge>
-              <Badge>
-                <Heart className="h-4 w-4 text-[#D4AF37]" /> By Invitation
-              </Badge>
+            <div className="mt-10 flex flex-wrap gap-1">
+              <div className="flex-1 min-w-[40%] sm:min-w-[30%]">
+                <Badge>
+                  <Plane className="h-4 w-4 text-[#ba861d]" />
+                  Boarding 08:30
+                </Badge>
+              </div>
+
+              <div className="flex-1 min-w-[52%] sm:min-w-[30%]">
+                <Badge>
+                  <MapPin className="h-4 w-4 text-[#ba861d]" />
+                  Westlands Haatso
+                </Badge>
+              </div>
+
+              <div className="flex-1 min-w-[48%] sm:min-w-[30%]">
+                <Badge>
+                  <Heart className="h-4 w-4 text-[#ba861d]" />
+                  Strictly By Invitation
+                </Badge>
+              </div>
             </div>
           </Panel>
 
@@ -218,28 +244,39 @@ export default function Invite() {
               {DETAILS.map((d) => (
                 <div
                   key={d.label}
-                  className="grid grid-cols-[26px_90px_1fr] gap-4 items-start"
+                  className="
+        grid grid-cols-[26px_90px_1fr]
+        gap-4
+        items-start
+        rounded-lg
+        px-1
+        py-1
+        transition
+        hover:bg-[#e6d19e]/25
+      "
                 >
-                  <div className="mt-[2px] text-white/60">{d.icon}</div>
-                  <div className="text-xs tracking-[0.25em] text-white/60">
+                  <div className="mt-[2px] text-[#3378b9]">{d.icon}</div>
+
+                  <div className="text-xs tracking-[0.25em] text-[#3d3d3d]">
                     {d.label}
                   </div>
-                  <div className="text-sm text-white/85">{d.value}</div>
+
+                  <div className="text-sm text-[#181818]">{d.value}</div>
                 </div>
               ))}
             </div>
 
             <div className="mt-10 rounded-xl border border-white/10 bg-white/5 p-5">
-              <p className="text-xs tracking-[0.30em] uppercase text-white/60">
+              <p className="text-xs tracking-[0.30em] uppercase text-black">
                 Dress Guidance
               </p>
-              <p className="mt-2 text-sm text-white/75 leading-relaxed">
+              <p className="mt-2 text-sm text-gray-800 leading-relaxed">
                 White. Think clean, timeless, elegant. Keep it comfortable for a
                 morning celebration.
               </p>
             </div>
 
-            <div className="mt-8 text-xs text-white/55">
+            <div className="mt-8 text-xs text-gray-500">
               Kindly note: this event is strictly by invitation.
             </div>
           </Panel>
@@ -294,15 +331,44 @@ export default function Invite() {
             </PanelText>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              {/* Primary */}
               <a
                 href="#map"
-                className="rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm hover:bg-white/15 transition text-center"
+                className="
+      rounded-full
+      border border-[#d4ac48]/60
+      bg-[#e6d19e]/35
+      px-6 py-3
+      text-sm
+      text-[#181818]
+      font-medium
+      text-center
+      shadow-[0_6px_16px_rgba(212,172,72,0.25)]
+      hover:bg-[#d4ac48]/45
+      hover:border-[#ba861d]
+      active:translate-y-[1px]
+      active:shadow-none
+      transition
+    "
               >
                 View Map
               </a>
+
+              {/* Secondary */}
               <a
                 href="#registry"
-                className="rounded-full border border-white/20 bg-transparent px-6 py-3 text-sm hover:bg-white/10 transition text-center"
+                className="
+      rounded-full
+      border border-[#d4ac48]/45
+      bg-[#f4f3f2]
+      px-6 py-3
+      text-sm
+      text-[#181818]
+      font-medium
+      text-center
+      hover:bg-[#e6d19e]/30
+      transition
+    "
               >
                 Continue ↓
               </a>
@@ -335,7 +401,7 @@ export default function Invite() {
               <p className="text-xs tracking-[0.35em] uppercase text-white/70">
                 LOCATION
               </p>
-              <h3 className="mt-3 text-2xl md:text-3xl">
+              <h3 className="mt-3 text-2xl md:text-3xl text-white">
                 The B B Event Center, Westlands Haatso
               </h3>
               <p className="mt-3 text-sm text-white/70">
@@ -343,15 +409,32 @@ export default function Invite() {
               </p>
 
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                {/* Replace with your real map link later */}
+                {/* Primary: Open in Maps */}
                 <a
                   href="https://maps.app.goo.gl/g7BMsyKMNjH71xJ27"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm hover:bg-white/15 transition text-center"
+                  className="
+      rounded-full
+      border border-[#d4ac48]/60
+      bg-[#e6d19e]/35
+      px-6 py-3
+      text-sm
+      text-white
+      font-medium
+      text-center
+      shadow-[0_6px_16px_rgba(212,172,72,0.25)]
+      hover:bg-[#d4ac48]/45
+      hover:border-[#ba861d]
+      active:translate-y-[1px]
+      active:shadow-none
+      transition
+    "
                 >
                   Open in Maps
                 </a>
+
+                {/* Secondary: Share */}
                 <button
                   onClick={() => {
                     const mapUrl = "https://maps.app.goo.gl/g7BMsyKMNjH71xJ27";
@@ -366,7 +449,20 @@ export default function Invite() {
                       alert("Location link copied to clipboard!");
                     }
                   }}
-                  className="rounded-full border border-white/20 bg-transparent px-6 py-3 text-sm hover:bg-white/10 transition text-center"
+                  className="
+      w-full sm:w-auto
+      rounded-full
+      border border-[#d4ac48]/45
+      bg-[#f4f3f2]
+      px-6 py-3
+      text-sm
+      font-medium
+      text-[#181818]
+      text-center
+      hover:bg-[#e6d19e]/30
+      active:translate-y-[1px]
+      transition
+    "
                 >
                   Share Location
                 </button>
@@ -389,22 +485,21 @@ export default function Invite() {
 
         <div className="relative z-10 mx-auto max-w-6xl px-5">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs tracking-[0.35em] uppercase text-white/70">
+            <p className="text-xs tracking-[0.35em] uppercase text-[#95998d]">
               REGISTRY
             </p>
 
-            <h2 className="mt-6 text-4xl sm:text-5xl leading-tight">
+            <h2 className="mt-6 text-4xl sm:text-5xl leading-tight text-white">
               Your presence is the greatest gift.
             </h2>
 
-            <p className="mt-6 text-white/70 text-sm leading-relaxed">
+            <p className="mt-6 text-gray-200 text-sm leading-relaxed">
               Your presence means everything to us. If you wish to bless us
               further, the options below are available. Thank you for
               celebrating this journey with us.
             </p>
 
             <div className="mt-10 grid gap-4 sm:grid-cols-2">
-              {/* MOMO */}
               <GiftCard
                 title="Mobile Money"
                 name="Richard Obeng Sefah"
@@ -412,7 +507,6 @@ export default function Invite() {
                 meta="MTN MoMo"
               />
 
-              {/* BANK */}
               <GiftCard
                 title="Bank Transfer"
                 name="Tracey Babsy Lamptey"
@@ -424,7 +518,20 @@ export default function Invite() {
 
           {/* big decorative text */}
           <div className="mt-16 text-center select-none pointer-events-none">
-            <div className="text-[14vw] leading-none font-semibold text-white/10">
+            <div
+              className="
+      text-[14vw]
+      leading-none
+      font-semibold
+      bg-linear-to-br
+      from-[#3378b9]
+      via-[#e6d19e]
+      to-[#d4ac48]
+      bg-clip-text
+      text-transparent
+      opacity-40
+    "
+            >
               CLEARED
             </div>
           </div>
@@ -437,7 +544,7 @@ export default function Invite() {
         eventTag="PT-0214"
       />
 
-      <footer className="py-10 text-center text-xs text-white/50">
+      <footer className="py-10 text-center text-xs text-black/50">
         Passport to Engagement • Accra
       </footer>
     </main>
@@ -456,8 +563,8 @@ function MosaicImage({
   return (
     <div className={`relative min-h-85 md:min-h-110 ${className}`}>
       <Image src={src} alt={alt} fill className="object-cover" unoptimized />
-      <div className="absolute inset-0 bg-black/30" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(212,175,55,0.10),transparent_55%)]" />
+      <div className="absolute inset-0 bg-[#3378b9]/15" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(212,172,72,0.18),transparent_55%)]" />
     </div>
   );
 }
@@ -465,7 +572,7 @@ function MosaicImage({
 
 function Panel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-[#141416] p-10 md:p-12 flex items-center">
+    <div className="bg-gray-100 p-10 md:p-12 flex items-center">
       <div className="max-w-md mx-auto w-full text-center md:text-left">
         {children}
       </div>
@@ -475,7 +582,8 @@ function Panel({ children }: { children: React.ReactNode }) {
 
 function PanelTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="text-md tracking-[0.35em] uppercase text-white/85 font-semibold">
+    <h3 className="text-sm tracking-[0.35em] uppercase text-[#181818] font-semibold">
+      <span className="text-[#ba861d]">✦ </span>
       {children}
     </h3>
   );
@@ -483,28 +591,31 @@ function PanelTitle({ children }: { children: React.ReactNode }) {
 
 function PanelText({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mt-6 text-sm text-white/70 leading-relaxed">{children}</p>
+    <p className="mt-6 text-sm text-[#494949] leading-relaxed">{children}</p>
   );
 }
 
+
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs text-white/75">
+    <span className="inline-flex items-center gap-2 rounded-full border border-[#d4ac48]/35 bg-[#e6d19e]/25 px-4 py-2 text-xs text-[#181818]">
       {children}
     </span>
   );
 }
 
+
 function Mini({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-white/12 bg-white/5 p-4">
-      <div className="text-[11px] tracking-[0.30em] uppercase text-white/55">
+    <div className="rounded-xl border border-black/10 bg-white/60 p-4">
+      <div className="text-[11px] tracking-[0.30em] uppercase text-[#95998d]">
         {label}
       </div>
-      <div className="mt-2 text-sm text-white/85">{value}</div>
+      <div className="mt-2 text-sm font-semibold text-[#181818]">{value}</div>
     </div>
   );
 }
+
 
 function GiftCard({
   title,
@@ -557,78 +668,122 @@ function RSVPSection({
   const telLink = `tel:${phone}`;
 
   return (
-    <section id="rsvp" className="relative py-10 overflow-hidden">
+    <section id="rsvp" className="relative py-16 overflow-hidden">
+      {/* Background image */}
       <Image
         src={IMG.rsvp}
         alt="RSVP background"
         fill
-        className="object-cover opacity-60"
+        className="object-cover opacity-85"
         unoptimized
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/70 to-black/90" />
-      <div className="absolute inset-0 opacity-[0.18] bg-[radial-gradient(circle_at_50%_30%,rgba(212,175,55,0.12),transparent_55%)]" />
+
+      {/* Light paper wash */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/85 via-[#f4f3f2]/75 to-gray-800/95" />
+
+      {/* Warm gold accent */}
+      <div className="absolute inset-0 opacity-[0.22] bg-[radial-gradient(circle_at_50%_30%,rgba(230,209,158,0.55),transparent_60%)]" />
 
       <div className="relative z-10 mx-auto max-w-6xl px-5">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs tracking-[0.35em] uppercase text-white/70">
+          {/* Section label */}
+          <p className="text-xs tracking-[0.35em] uppercase text-[#95998d]">
             RSVP
           </p>
 
-          <h2 className="mt-6 text-4xl sm:text-5xl leading-tight">
+          {/* Title */}
+          <h2 className="mt-6 text-4xl sm:text-5xl leading-tight text-white">
             Kindly confirm attendance.
           </h2>
 
-          <p className="mt-6 text-white/70 text-sm leading-relaxed">
+          {/* Description */}
+          <p className="mt-6 text-[#fff1f1] text-sm leading-relaxed">
             This event is strictly by invitation. Please confirm directly with{" "}
-            {name}.
+            <span className="font-medium text-[#181818]">{name}</span>.
           </p>
 
-          <div className="mt-10 mx-auto max-w-xl rounded-2xl border border-white/12 bg-white/5 backdrop-blur-sm p-6 text-left">
+          {/* RSVP Card */}
+          <div className="mt-10 mx-auto max-w-xl rounded-2xl border border-black/10 bg-white/75 backdrop-blur-sm p-6 text-left shadow-[0_18px_45px_rgba(24,24,24,0.10)]">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs tracking-[0.30em] uppercase text-white/60">
+                <p className="text-xs tracking-[0.30em] uppercase text-[#95998d]">
                   RSVP Contact
                 </p>
-                <p className="mt-2 text-lg font-semibold text-white">{name}</p>
-                <p className="mt-1 text-sm text-white/70">{pretty}</p>
+                <p className="mt-2 text-lg font-semibold text-[#181818]">
+                  {name}
+                </p>
+                <p className="mt-1 text-sm text-[#494949]">{pretty}</p>
               </div>
 
               <button
                 onClick={() => navigator.clipboard.writeText(phone)}
-                className="shrink-0 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs text-white/80 hover:bg-white/20 transition"
+                className="
+                  shrink-0
+                  rounded-full
+                  border border-[#d4ac48]/45
+                  bg-[#e6d19e]/25
+                  px-4 py-2
+                  text-xs
+                  font-medium
+                  text-[#181818]
+                  hover:bg-[#e6d19e]/40
+                  active:translate-y-[1px]
+                  transition
+                "
               >
                 Copy
               </button>
             </div>
 
+            {/* Actions */}
             <div className="mt-6 flex flex-col sm:flex-row gap-3">
               <a
                 href={waLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full border border-[#F6F7EC]/40 bg-[#AD833C]/15 px-6 py-3 text-sm text-white hover:bg-[#25D366]/25 transition text-center"
+                className="
+                  w-full sm:w-auto
+                  rounded-full
+                  border border-[#25D366]/40
+                  bg-[#25D366]/15
+                  px-6 py-3
+                  text-sm
+                  font-medium
+                  text-[#181818]
+                  text-center
+                  hover:bg-[#25D366]/25
+                  active:translate-y-[1px]
+                  transition
+                "
               >
                 Confirm on WhatsApp
               </a>
 
               <a
                 href={telLink}
-                className="rounded-full border border-white/20 bg-transparent px-6 py-3 text-sm hover:bg-white/10 transition text-center"
+                className="
+                  w-full sm:w-auto
+                  rounded-full
+                  border border-[#3378b9]/40
+                  bg-[#3378b9]/10
+                  px-6 py-3
+                  text-sm
+                  font-medium
+                  text-[#181818]
+                  text-center
+                  hover:bg-[#3378b9]/20
+                  active:translate-y-[1px]
+                  transition
+                "
               >
                 Call
               </a>
             </div>
 
-            <p className="mt-5 text-xs text-white/55">
+            <p className="mt-5 text-xs text-[#95998d]">
               WhatsApp message is pre-filled — just add your name.
             </p>
           </div>
-
-          {/* <div className="mt-16 text-center select-none pointer-events-none">
-            <div className="text-[14vw] leading-none font-semibold text-white/10">
-              CONFIRM
-            </div>
-          </div> */}
         </div>
       </div>
     </section>

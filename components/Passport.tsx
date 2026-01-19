@@ -39,14 +39,13 @@ function useCountdown(targetISO: string) {
   };
 }
 
-
 export default function PassportGate({
   subtitle = "Tap to open invite",
   onOpened,
 }: PassportGateProps) {
   const [isOpening, setIsOpening] = useState(false);
   const [isGone, setIsGone] = useState(false);
-    const [isZooming, setIsZooming] = useState(false);
+  const [isZooming, setIsZooming] = useState(false);
 
   useEffect(() => {
     if (!isOpening) return;
@@ -68,8 +67,6 @@ export default function PassportGate({
   }, [isOpening, onOpened]);
 
   const countdown = useCountdown("2026-02-14T10:00:00Z");
-
-
 
   return (
     <AnimatePresence>
