@@ -39,25 +39,37 @@ function useCountdown(targetISO: string) {
   };
 }
 
+
 export default function PassportGate({
   subtitle = "Tap to open invite",
   onOpened,
 }: PassportGateProps) {
   const [isOpening, setIsOpening] = useState(false);
   const [isGone, setIsGone] = useState(false);
+    const [isZooming, setIsZooming] = useState(false);
 
   useEffect(() => {
     if (!isOpening) return;
 
-    const t = setTimeout(() => {
+    // Start zoom effect after a short delay
+    const zoomTimer = setTimeout(() => {
+      setIsZooming(true);
+    }, 400); // Start zoom during the opening animation
+
+    const goneTimer = setTimeout(() => {
       setIsGone(true);
       setTimeout(onOpened, 250);
     }, 1200);
 
-    return () => clearTimeout(t);
+    return () => {
+      clearTimeout(zoomTimer);
+      clearTimeout(goneTimer);
+    };
   }, [isOpening, onOpened]);
 
   const countdown = useCountdown("2026-02-14T10:00:00Z");
+
+
 
   return (
     <AnimatePresence>
@@ -163,153 +175,287 @@ export default function PassportGate({
             </div>
 
             {/* (optional) countdown, if you want it on this screen too */}
-            <div className="absolute bottom-16 right-5 sm:right-8 rounded-xl border border-black/10 bg-white/65 backdrop-blur-sm px-4 py-3 text-right shadow-sm">
-              <p className="text-[10px] tracking-[0.35em] uppercase text-black/50">
+            <div
+              className="
+  absolute bottom-16 right-5 sm:right-8
+  px-4 py-3
+  text-right
+  border border-[#ddcb77]/40
+  rounded-lg
+  bg-transparent
+"
+            >
+              <p className="text-[10px] tracking-[0.35em] uppercase text-[#ddcb77]/70">
                 T-MINUS
               </p>
-              <div className="mt-1 font-semibold text-black text-base">
+
+              <div className="mt-1 font-semibold text-[#f3e39a] text-base tracking-[0.08em]">
                 {countdown.days}D {countdown.hours}:{countdown.minutes}:
                 {countdown.seconds}
               </div>
-              <p className="mt-1 text-[11px] text-black/50">
+
+              <p className="mt-1 text-[11px] tracking-[0.05em] text-[#ddcb77]/60 italic">
                 Boarding sequence initiated
               </p>
             </div>
           </div>
+          {/* Zoom Container */}
+          <motion.div
+            className="relative w-full h-full"
+            animate={
+              isZooming
+                ? {
+                    scale: 4,
+                    x: 0,
+                    y: 0,
+                    rotate: 0,
+                  }
+                : {
+                    scale: 1,
+                  }
+            }
+            transition={
+              isZooming
+                ? {
+                    duration: 1,
+                    ease: [0.17, 0.67, 0.23, 0.99],
+                  }
+                : {}
+            }
+            style={{
+              transformStyle: "preserve-3d",
+            }}
+          >
+            {/* 3D Stage */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 perspective-1200">
+              <motion.div
+                initial={{ scale: 0.98, y: 10 }}
+                animate={{ scale: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="relative w-85 sm:w-95 h-130 preserve-3d"
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                {/* Back cover */}
+                <div className="absolute inset-0 shadow-2xl bg-[#0B2A33] border border-white/10 rounded-r-sm overflow-hidden" />
 
-          {/* 3D Stage */}
-          <div className="perspective-1200">
-            <motion.div
-              initial={{ scale: 0.98, y: 10 }}
-              animate={{ scale: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="relative w-85 sm:w-95 h-130 preserve-3d"
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              {/* Back cover */}
-              <div className="absolute inset-0 shadow-2xl bg-[#0B2A33] border border-white/10 rounded-r-xl overflow-hidden" />
+                {/* Pages (minimal printed teaser) */}
+                <div className="absolute inset-2 bg-[#f8f6ef] border border-black/10 overflow-hidden">
+                  <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_30%_20%,black,transparent_45%),radial-gradient(circle_at_70%_80%,black,transparent_55%)]" />
 
-              {/* Pages (minimal printed teaser) */}
-              <div className="absolute inset-2 bg-[#f8f6ef] border border-black/10 overflow-hidden">
-                <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_30%_20%,black,transparent_45%),radial-gradient(circle_at_70%_80%,black,transparent_55%)]" />
-
-                <div className="relative h-full grid place-items-center">
-                  <div className="text-center">
-                    <PlaneIcon className="mx-auto mb-4 w-8 h-8 text-black/20" />
-                    <p className="text-[10px] tracking-[0.45em] uppercase text-black/45">
-                      Prepare for <br /> Liftoff
-                    </p>
+                  <div className="relative h-full grid place-items-center">
+                    <div className="text-center">
+                      <PlaneIcon className="mx-auto mb-4 w-8 h-8 text-black/20" />
+                      {/* <p className="text-[10px] tracking-[0.45em] uppercase text-black/45">
+                        Prepare for <br /> Liftoff
+                      </p> */}
+                    </div>
                   </div>
+
+                  <div className="absolute left-4 top-4 h-6 w-6 border-l border-t border-black/10" />
+                  <div className="absolute right-4 top-4 h-6 w-6 border-r border-t border-black/10" />
+                  <div className="absolute left-4 bottom-4 h-6 w-6 border-l border-b border-black/10" />
+                  <div className="absolute right-4 bottom-4 h-6 w-6 border-r border-b border-black/10" />
                 </div>
 
-                <div className="absolute left-4 top-4 h-6 w-6 border-l border-t border-black/10" />
-                <div className="absolute right-4 top-4 h-6 w-6 border-r border-t border-black/10" />
-                <div className="absolute left-4 bottom-4 h-6 w-6 border-l border-b border-black/10" />
-                <div className="absolute right-4 bottom-4 h-6 w-6 border-r border-b border-black/10" />
-              </div>
-
-              {/* Front cover (hinged) */}
-              <motion.div
-                className="absolute inset-0 shadow-2xl cursor-pointer preserve-3d rounded-r-xl overflow-hidden"
-                style={{
-                  transformOrigin: "left center",
-                  transformStyle: "preserve-3d",
-                }}
-                onClick={() => !isOpening && setIsOpening(true)}
-                animate={
-                  isOpening ? { rotateY: -165, x: -4 } : { rotateY: 0, x: 0 }
-                }
-                transition={{ duration: 1.15, ease: [0.2, 0.8, 0.2, 1] }}
-              >
-                {/* ================= FRONT FACE (cover) ================= */}
-                <div
-                  className="absolute inset-0 bg-[#0B1D26] border border-white/10"
+                {/* Front cover (hinged) */}
+                <motion.div
+                  className="absolute inset-0 shadow-2xl cursor-pointer preserve-3d rounded-r-sm overflow-hidden"
                   style={{
-                    backfaceVisibility: "hidden",
-                    WebkitBackfaceVisibility: "hidden",
+                    transformOrigin: "left center",
+                    transformStyle: "preserve-3d",
                   }}
+                  onClick={() => !isOpening && setIsOpening(true)}
+                  animate={
+                    isOpening ? { rotateY: -165, x: -4 } : { rotateY: 0, x: 0 }
+                  }
+                  transition={{ duration: 1.15, ease: [0.2, 0.8, 0.2, 1] }}
                 >
-                  <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(120deg,transparent_0%,rgba(255,255,255,0.35)_45%,transparent_70%)]" />
+                  {/* ================= FRONT FACE (cover) ================= */}
+                  <div
+                    className="absolute inset-0 bg-[#3378b8] border border-white/10"
+                    style={{
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden",
+                    }}
+                  >
+                    {/* subtle print texture + sheen */}
+                    <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.35),transparent_40%),radial-gradient(circle_at_80%_30%,rgba(0,0,0,0.25),transparent_55%)]" />
+                    <div className="absolute inset-0 opacity-[0.07] bg-[linear-gradient(120deg,transparent_0%,rgba(255,255,255,0.35)_45%,transparent_70%)]" />
 
-                  <div className="absolute inset-5 border border-[#D4AF37]/35" />
-                  <div className="absolute inset-[22px] border border-white/10" />
+                    {/* thin inner borders like a printed card */}
+                    {/* <div className="absolute inset-5 border border-[#D4AF37]/30" />
+                  <div className="absolute inset-5.5 border border-white/10" /> */}
 
-                  <div className="relative h-full px-10 py-14 flex flex-col items-center text-center">
-                    <p className="text-[#D4AF37] tracking-[0.45em] text-[15px] uppercase font-semibold">
-                      Passport
-                    </p>
+                    <div className="relative h-full px-10 py-5 flex flex-col items-center text-center">
+                      {/* Top title */}
+                      <div className="mt-2">
+                        <h1
+                          className="
+          uppercase
+          text-4xl
+          font-semibold
+          tracking-[0.20em]
+          bg-linear-to-br from-[#bd8a1d] via-[#eed774] to-[#ddcb77]
+          bg-clip-text
+          text-transparent
+          drop-shadow-[0_1px_0_rgba(0,0,0,0.10)]
+        "
+                        >
+                          PASSPORT
+                        </h1>
 
-                    <div className="mt-6 relative">
-                      <div className="h-28 w-28" />
-                      <div className="absolute inset-0 grid place-items-center">
-                        <Image
-                          src="/heart.png"
-                          alt="Heart"
-                          width={400}
-                          height={400}
-                        />
+                        <p
+                          className="
+          mt-2
+          uppercase
+          text-sm
+   font-bold
+          tracking-[0.22em]
+          bg-linear-to-br from-[#bd8a1d] via-[#f3dc77] to-[#ddcb77]
+          bg-clip-text
+          text-transparent
+          opacity-95
+        "
+                        >
+                          WEDDING INVITATION
+                        </p>
+                      </div>
+
+                      {/* Emblem */}
+                      <div className="mt-2 mb-2 grid place-items-center">
+                        <div className="relative">
+                          {/* a tiny glow behind the emblem */}
+                          <div className="absolute -inset-6 rounded-full bg-white/10 blur-2xl opacity-30" />
+
+                          <Image
+                            src="/passport.png"
+                            alt="Wedding emblem"
+                            width={280}
+                            height={280}
+                            className="relative drop-shadow-[0_10px_25px_rgba(0,0,0,0.18)]"
+                            priority
+                          />
+                        </div>
+                      </div>
+
+                      {/* Bottom copy (matches screenshot layout) */}
+                      <div className="mt-auto w-full pb-3">
+                        <p
+                          className="
+          uppercase
+          text-xs
+          font-bold
+      
+          tracking-[0.20em]
+          text-[#ddcb77]
+          opacity-90
+        "
+                        >
+                          TO THE MARRIAGE CEREMONY OF
+                        </p>
+
+                        <p
+                          className="
+          mt-1
+          uppercase
+          text-sm
+          sm:text-base
+          font-semibold
+          tracking-[0.12em]
+          text-[#f3e39a]
+        "
+                        >
+                          RICHARD AND BABSY
+                        </p>
+
+                        <p
+                          className="
+          mt-1
+          text-sm
+          sm:text-base
+          tracking-[0.10em]
+          text-[#ddcb77]
+          opacity-95
+        "
+                        >
+                          14.02.26
+                        </p>
+
+                        <div className="mt-1 space-y-1">
+                          <p className="text-xs tracking-[0.08em] text-[#ddcb77] opacity-90">
+                            #ThePilot&#39;sTherapist
+                          </p>
+                          <p className="text-xs tracking-[0.08em] text-[#ddcb77] opacity-90">
+                            #R&amp;B26
+                          </p>
+                        </div>
+
+                        <motion.p
+                          animate={
+                            isOpening
+                              ? { opacity: 0 }
+                              : { opacity: [0.55, 1, 0.55] }
+                          }
+                          transition={{
+                            duration: 1.4,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                          }}
+                          className=" text-[#fff9df]  mt-2 text-xs"
+                        >
+                          Tap to open invite
+                        </motion.p>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="mt-10 w-full space-y-2 opacity-70">
-                      <div className="h-px w-full bg-white/10" />
-                      <div className="h-px w-5/6 bg-white/10 mx-auto" />
-                    </div>
+                  {/* ================= INSIDE FACE (blank inner cover) ================= */}
+                  <div
+                    className="absolute inset-0 bg-[#f5f2e9] border border-black/10"
+                    style={{
+                      transform: "rotateY(180deg)",
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden",
+                    }}
+                  >
+                    {/* Subtle texture */}
+                    <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_30%_20%,black,transparent_45%),radial-gradient(circle_at_70%_80%,black,transparent_55%)]backface-hidden" />
 
-                    <div className="mt-8">
-                      <h1 className="mt-3 text-white text-lg sm:text-xl font-semibold leading-snug text-center">
-                        <span className="block">FG OFFR RO SEFAH</span>
-                        <span className="block my-1">&amp;</span>
-                        <span className="block">FG OFFR TB LAMPTEY</span>
-                      </h1>
-                    </div>
+                    {/* Inner content */}
+                    <div className="relative h-full flex flex-col items-center justify-center px-8 text-center">
+                      <div className="mb-6">
+                        <h2 className="text-lg font-semibold tracking-wider text-gray-800 uppercase">
+                          Welcome Aboard
+                        </h2>
+                        <p className="mt-2 text-sm text-gray-600 tracking-wide">
+                          Your invitation awaits inside
+                        </p>
+                      </div>
 
-                    <div className="mt-auto pb-6">
-                      <motion.p
-                        animate={
-                          isOpening
-                            ? { opacity: 0 }
-                            : { opacity: [0.55, 1, 0.55] }
-                        }
-                        transition={{
-                          duration: 1.4,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
-                        className="text-[#D4AF37] text-sm"
-                      >
-                        {subtitle}
-                      </motion.p>
+                      {/* Optional: decorative lines or stamps */}
+                      <div className="w-full max-w-xs border-t border-gray-300/50 pt-6">
+                        <div className="text-xs text-gray-500 tracking-widest uppercase">
+                          Issued for: The Wedding of Richard &amp; Babsy
+                        </div>
+                        <div className="mt-2 text-xs text-gray-400">
+                          PT-0214 · 14.02.26 · #ThePilot&apos;sTherapist
+                        </div>
+                      </div>
+
+                      {/* Small decorative corners */}
+                      <div className="absolute left-4 top-4 h-6 w-6 border-l border-t border-gray-400/30" />
+                      <div className="absolute right-4 top-4 h-6 w-6 border-r border-t border-gray-400/30" />
+                      <div className="absolute left-4 bottom-4 h-6 w-6 border-l border-b border-gray-400/30" />
+                      <div className="absolute right-4 bottom-4 h-6 w-6 border-r border-b border-gray-400/30" />
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
-                {/* ================= INSIDE FACE (blank inner cover) ================= */}
-                <div
-                  className="absolute inset-0 bg-[#1e3a5f] border border-white/10"
-                  style={{
-                    transform: "rotateY(180deg)",
-                    backfaceVisibility: "hidden",
-                    WebkitBackfaceVisibility: "hidden",
-                  }}
-                >
-                  {/* keep it mostly blank with subtle gradient like a real passport/book */}
-                  <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent_45%),radial-gradient(circle_at_70%_80%,rgba(0,0,0,0.15),transparent_55%)]" />
-
-                  {/* very subtle inner-print (optional, tiny) */}
-                  <div className="absolute bottom-8 left-8 right-8">
-                    <div className="h-px w-full bg-white/15" />
-                    <p className="mt-3 text-[10px] tracking-[0.45em] uppercase text-white/40">
-                      CLEARED FOR ENTRY • PT-0214
-                    </p>
-                  </div>
-                </div>
+                {/* shadow */}
+                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[85%] h-8 blur-2xl bg-black/50 -z-10" />
               </motion.div>
-
-              {/* shadow */}
-              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-[85%] h-8 blur-2xl bg-black/50 -z-10" />
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
