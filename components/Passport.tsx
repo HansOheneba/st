@@ -214,14 +214,10 @@ export default function PassportGate({
                     scale: 1,
                   }
             }
-            transition={
-              isZooming
-                ? {
-                    duration: 1,
-                    ease: [0.17, 0.67, 0.23, 0.99],
-                  }
-                : {}
-            }
+            transition={{
+              duration: 1.1,
+              ease: [0.4, 0.0, 0.2, 1], // ← true ease-in-out
+            }}
             style={{
               transformStyle: "preserve-3d",
             }}
