@@ -19,7 +19,7 @@ const DETAILS: DetailItem[] = [
     value: "Saturday, 14th February, 2026",
     icon: <CalendarDays className="h-4 w-4" />,
   },
-  { label: "TIME", value: "10:00 HRS", icon: <Clock className="h-4 w-4" /> },
+  { label: "TIME", value: "09:00 HRS", icon: <Clock className="h-4 w-4" /> },
   {
     label: "VENUE",
     value: "The B B Event Center, Westlands Haatso",
@@ -81,7 +81,7 @@ const IMG = {
 };
 
 export default function Invite() {
-  const countdown = useCountdown("2026-02-14T10:00:00Z");
+  const countdown = useCountdown("2026-02-14T09:00:00Z");
 
   return (
     <main className="bg-[#f4f3f2] text-[#181818]">
@@ -145,7 +145,7 @@ export default function Invite() {
           </h1>
 
           <p className="mt-5 sm:mt-7 text-white/70 text-[11px] sm:text-sm tracking-[0.22em] sm:tracking-[0.25em] uppercase">
-            Accra • 14 Feb 2026 • Boarding begins 09:30
+            Accra • 14 Feb 2026 • Engagement 09:00
           </p>
 
           {/* “Boarding pass” strip */}
@@ -184,11 +184,11 @@ export default function Invite() {
 
             <div className="p-5 sm:p-6 flex flex-wrap gap-3 sm:gap-4 text-left">
               <div className="flex-1 basis-[calc(50%-0.5rem)] sm:basis-[calc(33.333%-0.75rem)]">
-                <Mini label="Flight" value="PT-0214" />
+                <Mini label="Flight" value="RB-2026" />
               </div>
 
               <div className="flex-1 basis-[calc(50%-0.5rem)] sm:basis-[calc(33.333%-0.75rem)]">
-                <Mini label="Gate" value="Love" />
+                <Mini label="Gate" value="Twin City Love" />
               </div>
 
               <div
@@ -199,7 +199,7 @@ export default function Invite() {
     last:grow
   "
               >
-                <Mini label="Seat" value="A2 & B2" />
+                <Mini label="Seat" value="R1 & B1" />
               </div>
             </div>
           </div>
@@ -224,7 +224,7 @@ export default function Invite() {
               <div className="flex-1 min-w-[40%] sm:min-w-[30%]">
                 <Badge>
                   <Plane className="h-4 w-4 text-[#ba861d]" />
-                  Boarding 08:30
+                  Boarding 09:00
                 </Badge>
               </div>
 
@@ -555,7 +555,7 @@ export default function Invite() {
       <RSVPSection
         name="Stacey Elsie Lamptey"
         phone="0560607547"
-        eventTag="PT-0214"
+        eventTag="RB-2026"
       />
 
       <footer className="py-10 text-center text-xs text-black/50">
@@ -665,7 +665,7 @@ function GiftCard({
 function RSVPSection({
   name,
   phone,
-  eventTag = "PT-0214",
+  eventTag = "RB-2026",
 }: {
   name: string;
   phone: string; // e.g. 0560607547
