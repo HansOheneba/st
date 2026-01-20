@@ -552,11 +552,13 @@ export default function Invite() {
         </div>
       </section>
 
-      <RSVPSection
-        name="Stacey Elsie Lamptey"
-        phone="0560607547"
-        eventTag="RB-2026"
-      />
+     <RSVPSection
+  eventTag="RB-2026"
+  contacts={[
+    { name: "Stacey Elsie Lamptey", phone: "0560607547" },
+    { name: "FG OFFR GF ADADE", phone: "0502698506" },
+  ]}
+/>
 
       <footer className="py-10 text-center text-xs text-black/50">
         Passport to Engagement • Accra
@@ -663,24 +665,12 @@ function GiftCard({
   );
 }
 function RSVPSection({
-  name,
-  phone,
+  contacts,
   eventTag = "RB-2026",
 }: {
-  name: string;
-  phone: string; // e.g. 0560607547
+  contacts: Array<{ name: string; phone: string }>;
   eventTag?: string;
 }) {
-  const intl = `233${phone.replace(/\D/g, "").replace(/^0/, "")}`;
-  const pretty = phone;
-
-  const message = encodeURIComponent(
-    `Hello ${name}, I’m confirming my attendance for the engagement (${eventTag}). My name is: ______. ✅`
-  );
-
-  const waLink = `https://wa.me/${intl}?text=${message}`;
-  const telLink = `tel:${phone}`;
-
   return (
     <section id="rsvp" className="relative py-16 overflow-hidden">
       {/* Background image */}
@@ -700,106 +690,127 @@ function RSVPSection({
 
       <div className="relative z-10 mx-auto max-w-6xl px-5">
         <div className="mx-auto max-w-3xl text-center">
-          {/* Section label */}
           <p className="text-xs tracking-[0.35em] uppercase text-[#95998d]">
             RSVP
           </p>
 
-          {/* Title */}
           <h2 className="mt-6 text-4xl sm:text-5xl leading-tight text-white">
             Kindly confirm attendance.
           </h2>
 
-          {/* Description */}
           <p className="mt-6 text-[#fff1f1] text-sm leading-relaxed">
-            This event is strictly by invitation. Please confirm directly with{" "}
-            <span className="font-medium text-[#181818]">{name}</span>.
+            This event is strictly by invitation. Please confirm directly with
+            one of the contacts below.
           </p>
 
-          {/* RSVP Card */}
-          <div className="mt-10 mx-auto max-w-xl rounded-2xl border border-black/10 bg-white/75 backdrop-blur-sm p-6 text-left shadow-[0_18px_45px_rgba(24,24,24,0.10)]">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs tracking-[0.30em] uppercase text-[#95998d]">
-                  RSVP Contact
-                </p>
-                <p className="mt-2 text-lg font-semibold text-[#181818]">
-                  {name}
-                </p>
-                <p className="mt-1 text-sm text-[#494949]">{pretty}</p>
-              </div>
-
-              <button
-                onClick={() => navigator.clipboard.writeText(phone)}
-                className="
-                  shrink-0
-                  rounded-full
-                  border border-[#d4ac48]/45
-                  bg-[#e6d19e]/25
-                  px-4 py-2
-                  text-xs
-                  font-medium
-                  text-[#181818]
-                  hover:bg-[#e6d19e]/40
-                  active:translate-y-[1px]
-                  transition
-                "
-              >
-                Copy
-              </button>
-            </div>
-
-            {/* Actions */}
-            <div className="mt-6 flex flex-col sm:flex-row gap-3">
-              <a
-                href={waLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  w-full sm:w-auto
-                  rounded-full
-                  border border-[#25D366]/40
-                  bg-[#25D366]/15
-                  px-6 py-3
-                  text-sm
-                  font-medium
-                  text-[#181818]
-                  text-center
-                  hover:bg-[#25D366]/25
-                  active:translate-y-[1px]
-                  transition
-                "
-              >
-                Confirm on WhatsApp
-              </a>
-
-              <a
-                href={telLink}
-                className="
-                  w-full sm:w-auto
-                  rounded-full
-                  border border-[#3378b9]/40
-                  bg-[#3378b9]/10
-                  px-6 py-3
-                  text-sm
-                  font-medium
-                  text-[#181818]
-                  text-center
-                  hover:bg-[#3378b9]/20
-                  active:translate-y-[1px]
-                  transition
-                "
-              >
-                Call
-              </a>
-            </div>
-
-            <p className="mt-5 text-xs text-[#95998d]">
-              WhatsApp message is pre-filled — just add your name.
-            </p>
+          <div className="mt-10 grid gap-4">
+            {contacts.map((c) => (
+              <RSVPCard key={`${c.name}-${c.phone}`} contact={c} eventTag={eventTag} />
+            ))}
           </div>
+
+          <p className="mt-5 text-xs text-[#95998d]">
+            WhatsApp message is pre-filled — just add your name.
+          </p>
         </div>
       </div>
     </section>
   );
 }
+
+function RSVPCard({
+  contact,
+  eventTag,
+}: {
+  contact: { name: string; phone: string };
+  eventTag: string;
+}) {
+  const phoneDigits = contact.phone.replace(/\D/g, "");
+  const intl = `233${phoneDigits.replace(/^0/, "")}`; // Ghana
+  const message = encodeURIComponent(
+    `Hello ${contact.name}, I’m confirming my attendance for the engagement (${eventTag}). My name is: ______. ✅`
+  );
+
+  const waLink = `https://wa.me/${intl}?text=${message}`;
+  const telLink = `tel:${phoneDigits}`;
+
+  return (
+    <div className="mx-auto w-full max-w-xl rounded-2xl border border-black/10 bg-white/75 backdrop-blur-sm p-6 text-left shadow-[0_18px_45px_rgba(24,24,24,0.10)]">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs tracking-[0.30em] uppercase text-[#95998d]">
+            RSVP Contact
+          </p>
+          <p className="mt-2 text-lg font-semibold text-[#181818]">
+            {contact.name}
+          </p>
+          <p className="mt-1 text-sm text-[#494949]">{contact.phone}</p>
+        </div>
+
+        <button
+          onClick={() => navigator.clipboard.writeText(contact.phone)}
+          className="
+            shrink-0
+            rounded-full
+            border border-[#d4ac48]/45
+            bg-[#e6d19e]/25
+            px-4 py-2
+            text-xs
+            font-medium
+            text-[#181818]
+            hover:bg-[#e6d19e]/40
+            active:translate-y-[1px]
+            transition
+          "
+        >
+          Copy
+        </button>
+      </div>
+
+      <div className="mt-6 flex flex-col sm:flex-row gap-3">
+        <a
+          href={waLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+            w-full sm:w-auto
+            rounded-full
+            border border-[#25D366]/40
+            bg-[#25D366]/15
+            px-6 py-3
+            text-sm
+            font-medium
+            text-[#181818]
+            text-center
+            hover:bg-[#25D366]/25
+            active:translate-y-[1px]
+            transition
+          "
+        >
+          Confirm on WhatsApp
+        </a>
+
+        <a
+          href={telLink}
+          className="
+            w-full sm:w-auto
+            rounded-full
+            border border-[#3378b9]/40
+            bg-[#3378b9]/10
+            px-6 py-3
+            text-sm
+            font-medium
+            text-[#181818]
+            text-center
+            hover:bg-[#3378b9]/20
+            active:translate-y-[1px]
+            transition
+          "
+        >
+          Call
+        </a>
+      </div>
+    </div>
+  );
+}
+
