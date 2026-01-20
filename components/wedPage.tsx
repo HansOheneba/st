@@ -28,17 +28,20 @@ const DETAILS: DetailItem[] = [
   { label: "DRESS CODE", value: "White", icon: <Ticket className="h-4 w-4" /> },
 ];
 
-
 function useCountdown(targetISO: string) {
-  const [now, setNow] = useState(() => Date.now());
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
+    // set initial time on client
+    setNow(Date.now());
+
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
 
   const target = new Date(targetISO).getTime();
-  const diff = Math.max(0, target - now);
+
+  const diff = now === null ? 0 : Math.max(0, target - now);
 
   const totalSeconds = Math.floor(diff / 1000);
   const days = Math.floor(totalSeconds / 86400);
@@ -49,6 +52,7 @@ function useCountdown(targetISO: string) {
   const pad = (n: number) => n.toString().padStart(2, "0");
 
   return {
+    ready: now !== null, // ✅ add this
     diff,
     days,
     hours: pad(hours),
@@ -56,6 +60,8 @@ function useCountdown(targetISO: string) {
     seconds: pad(seconds),
   };
 }
+
+
 
 const IMG = {
   hero: "/img2.jpg",
@@ -132,7 +138,7 @@ export default function Invite() {
             </span>
           </div>
 
-          <h1 className="mt-7 sm:mt-8 text-4xl sm:text-6xl md:text-7xl leading-[0.95] sm:leading-none">
+          <h1 className="mt-7 sm:mt-8 text-4xl sm:text-6xl md:text-7xl leading-[0.95] sm:leading-none text-white">
             FG OFFR RO SEFAH
             <span className="block mt-3 sm:mt-4 text-white/90">&</span>
             FG OFFR TB LAMPTEY
@@ -145,26 +151,34 @@ export default function Invite() {
           {/* “Boarding pass” strip */}
           <div className="mt-8 sm:mt-10 mx-auto max-w-3xl rounded-2xl border border-[#d4ac48]/25 bg-[#f4f3f2]/85 backdrop-blur-sm overflow-hidden shadow-[0_18px_50px_rgba(24,24,24,0.12)]">
             {/* Top row: becomes stacked + centered on mobile */}
-            <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-0">
-              <div className="p-5 sm:p-6 text-center sm:text-left">
-                <p className="text-xs tracking-[0.30em] uppercase text-[#95998d]">
-                  Departure
-                </p>
-                <p className="mt-1 text-sm text-[#494949]">Accra</p>
-              </div>
-              <div className="h-px w-60 bg-black/10 my-0.5 mx-auto" />
-              <div className="hidden sm:flex items-center justify-center px-4">
-                <div className="h-5 w-px bg-white/10" />
-              </div>
+           {/* Top row: stacked on mobile, 3 columns on desktop */}
+<div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr]">
+  {/* Departure */}
+  <div className="p-5 sm:p-6 text-center sm:text-left">
+    <p className="text-xs tracking-[0.30em] uppercase text-[#95998d]">
+      Departure
+    </p>
+    <p className="mt-1 text-sm text-[#494949]">Accra</p>
+  </div>
 
-              <div className="p-5 sm:p-6 text-center sm:text-right">
-                <p className="text-xs tracking-[0.30em] uppercase text-gray-500">
-                  Arrival
-                </p>
-                <div className="mt-2 text-2xl font-semibold">ENG</div>
-                <p className="mt-1 text-sm text-gray-500">Engagement</p>
-              </div>
-            </div>
+  {/* Center divider (desktop) */}
+  <div className="hidden sm:flex items-center justify-center px-4">
+    <div className="h-8 w-px bg-black/10" />
+  </div>
+
+  {/* Arrival */}
+  <div className="p-5 sm:p-6 text-center sm:text-right">
+    <p className="text-xs tracking-[0.30em] uppercase text-gray-500">
+      Arrival
+    </p>
+    <div className="mt-2 text-2xl font-semibold">ENG</div>
+    <p className="mt-1 text-sm text-gray-500">Engagement</p>
+  </div>
+
+  {/* Mobile divider (only shows on mobile, sits BETWEEN the two blocks) */}
+  <div className="sm:hidden h-px w-60 bg-black/10 mx-auto" />
+</div>
+
 
             <div className="h-px w-full bg-white/10" />
 

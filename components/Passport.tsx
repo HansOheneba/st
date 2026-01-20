@@ -10,17 +10,20 @@ type PassportGateProps = {
   subtitle?: string;
   onOpened: () => void;
 };
-
 function useCountdown(targetISO: string) {
-  const [now, setNow] = useState(() => Date.now());
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
+    // set initial time on client
+    setNow(Date.now());
+
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
 
   const target = new Date(targetISO).getTime();
-  const diff = Math.max(0, target - now);
+
+  const diff = now === null ? 0 : Math.max(0, target - now);
 
   const totalSeconds = Math.floor(diff / 1000);
   const days = Math.floor(totalSeconds / 86400);
@@ -31,6 +34,7 @@ function useCountdown(targetISO: string) {
   const pad = (n: number) => n.toString().padStart(2, "0");
 
   return {
+    ready: now !== null, // ✅ add this
     diff,
     days,
     hours: pad(hours),
@@ -38,6 +42,7 @@ function useCountdown(targetISO: string) {
     seconds: pad(seconds),
   };
 }
+
 
 export default function PassportGate({
   subtitle = "Tap to open invite",
