@@ -726,9 +726,9 @@ function RSVPCard({
   eventTag: string;
 }) {
   const phoneDigits = contact.phone.replace(/\D/g, "");
-  const intl = `233${phoneDigits.replace(/^0/, "")}`; // Ghana
+  const intl = `${phoneDigits.replace(/^0/, "")}`; // Ghana
   const message = encodeURIComponent(
-    `Hello ${contact.name}, I’m confirming my attendance for the engagement (${eventTag}). My name is: ______. ✅`
+    `Hello ${contact.name}, I’m confirming my attendance for the engagement (${eventTag}). My name is: [Your Name Here]`
   );
 
   const waLink = `https://wa.me/${intl}?text=${message}`;
